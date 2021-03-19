@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="{% static 'css/Styleforum.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+
+
+
+
+</head>
+
+<body>
+
+    <header>
+        <!--NavBar Section-->
+        <div class="navbar">
+            <nav class="navigation hide" id="navigation">
+                <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="forums.html">Forums</a></li>
+                    <li class="nav-item"><a href="posts.html">Posts</a></li>
+                    <li class="nav-item"><a href="detail.html">Detail</a></li>
+                </ul>
+            </nav>
+            <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+            <div class="brand">My Forum</div>
+        </div>
+        <!--SearchBox Section-->
+        <div class="search-box">
+            <div>
+                <select name="" id="">
+                    <option value="Everything">Everything</option>
+                    <option value="Titles">Titles</option>
+                    <option value="Descriptions">Descriptions</option>
+                </select>
+                <input type="text" name="q" placeholder="search ...">
+                <button><i class="fa fa-search"></i></button>
+            </div>
+
+        </div>
+
+
+        <section class="container" >
+      <div class="latest-posts">
+        <header>
+          <h2>Latest from the forum</h2>
+          <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </header>
+      </div>
+    <div class= "grid-container">
+
+          {% for obj in latest %}
+          <div class="grid-item"  >
+                <div class="post-thumbnail"><a href="#"><img src=" " alt="..." class="img-fluid"></a></div>
+                <div class="post-details">
+                  <div class="justify-content-between">
+                    <div class="date">{{ obj.timestamp }}</div>
+                    <div class="category">
+                      {% for cat in obj.topic_title.topic_title%}
+                      <a href="#">{{ cat }}</a>
+                      {% endfor %}
+                      </div>
+                  </div><a href="#">
+                    <h3 class="h4">{{ obj.title }}</h3></a>
+                  <p class="text-muted">{{ obj.overview|linebreaks|truncatechars:200 }}</p>
+                </div>
+          </div>
+          {% endfor %}
+    </div>
+
+
+
+    </section>
+
+
+    <div class="container">
+        <!--Navigation-->
+        <div class="navigate">
+            <span><a href="">MyForum - Forums</a> >> <a href="">random subforum</a> >> <a href="">random topic</a></span>
+        </div>
+<a href="forum-create.html"> <button> Create New Post</button></a>
+        <!--Topic Section-->
+        <div class="topic-container">
+            <!--Original thread-->
+            <div class="head">
+                <div class="authors">Author</div>
+                <div class="content">Topic: random topic (Read 1325 Times)</div>
+            </div>
+{% for instance in item %}
+            <div class="body">
+
+
+                <div class="authors">
+                    <div class="username">
+
+   {{ instance.author.Username }} <br>
+
+
+                    </div>
+                    <div>{{ instance.author.Role_id }} </div>
+
+
+                    <img src="{{ instance.author.thumbnail.url }}" alt="error">
+                    <div>Posts: <u>45</u></div>
+                    <div>Points: <u>4586</u></div>
+                </div>
+                <div class="content">
+<a href="{% url 'forums:Post_detail' instance.pk %}">
+                   {{ instance.title }} .
+    </a>
+                    <br><br>
+
+                    <br>
+                    <hr>
+ {{ instance.body }}
+                    <br><br><br>
+
+
+
+            </div>
+
+        </div>
+
+
+        {% endfor %}
+
+
+{% if page.has_previous %}
+<a href="{% url 'forums:forum' %}?page={{page.previous_page_number}}">Previous Page</a>
+ {% endif %}
+{% if page.has_next %}
+<a href="{% url 'forums:forum' %}?page={{page.next_page_number}}">Next Page</a>
+ {% endif %}
+            {{ numberofpage }}
+    </div>
+
+
+    <footer>
+        <span>&copy;  AimLab | All Rights Reserved</span>
+    </footer>
+    <script src="{% static 'js/forummain.js' %}"></script>
+
+
+</body>
+</html>

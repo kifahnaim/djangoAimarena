@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="{% static 'css/Styleforum.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+    <style>
+   .modal   button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+ .modal button:hover {
+  opacity:1;
+}
+
+/* Float cancel and delete buttons and add an equal width */
+.cancelbtn, .deletebtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add a color to the cancel button */
+.cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Add a color to the delete button */
+.deletebtn {
+  background-color: #f44336;
+}
+
+/* Add padding and center-align text to the container */
+.modal .container {
+  padding: 16px;
+  text-align: center;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 20%;
+  top: 0;
+
+  width: 50%; /* Full width */
+  height: 50%; /* Full height */
+
+
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #000;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* The Modal Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .deletebtn {
+     width: 100%;
+  }
+}
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <!--NavBar Section-->
+        <div class="navbar">
+            <nav class="navigation hide" id="navigation">
+                <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="forums.html">Forums</a></li>
+                    <li class="nav-item"><a href="posts.html">Posts</a></li>
+                    <li class="nav-item"><a href="detail.html">Detail</a></li>
+                </ul>
+            </nav>
+            <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+            <div class="brand">My Forum</div>
+        </div>
+        <!--SearchBox Section-->
+        <div class="search-box">
+            <div>
+                <select name="" id="">
+                    <option value="Everything">Everything</option>
+                    <option value="Titles">Titles</option>
+                    <option value="Descriptions">Descriptions</option>
+                </select>
+                <input type="text" name="q" placeholder="search ...">
+                <button><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <!--Navigation-->
+        <div class="navigate">
+            <span><a href="">MyForum - Forums</a> >> <a href="">random subforum</a></span>
+        </div>
+        <!--Display posts table-->
+        <button onclick="document.getElementById('id01').style.display='block'">Open Modal</button>
+
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+  <form class="modal-content" action="/action_page.php">
+    <div class="container">
+      <h1>Delete Account</h1>
+      <p>Are you sure you want to delete your account?</p>
+
+      <div class="clearfix">
+        <button  type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+        <div class="posts-table">
+            <div class="table-head">
+                <div class="status">Status</div>
+                <div class="subjects">Subjects</div>
+                <div class="replies">Replies/Views</div>
+                <div class="last-reply">Last Reply</div>
+            </div>
+            {% for item in items %}
+            <div class="table-row">
+                <div class="status"><i class="fa fa-fire"></i></div>
+                <div class="subjects">
+                    <a href="">{{ item.title  }}</a>
+                    <br>
+                    {{item.time|timesince }}
+
+                    <span>Started by <b><a href="">{{ item.Username }}</a></b>(You)</span>
+                </div>
+                <div class="replies">
+                    <button> s</button>
+                </div>
+
+                <div class="last-reply">
+
+                    <b>  <button> <a href="">Edit</a> </button></b>
+
+                    <b>  <a href=" {% url 'forums:deletepost' item.id %} " class='link-delete' >Delete </a> </b>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!--ends here-->
+        </div>
+        <!--Pagination starts-->
+            <div class="pagination">
+                pages: <a href="">1</a><a href="">2</a><a href="">3</a>
+            </div>
+        <!--pagination ends-->
+    </div>
+
+    <div class="note">
+        <span><i class="fa fa-frown-o"></i>&nbsp; 0 Engagement Topic</span>&nbsp;&nbsp;&nbsp;<a href=""><i class="fa fa-share-square"></i></a><br>
+        <span><i class="fa fa-book"></i>&nbsp; Low Engagement Topic</span>&nbsp;&nbsp;&nbsp;<a href=""><i class="fa fa-share-square"></i></a><br>
+        <span><i class="fa fa-fire"></i>&nbsp; Popular Topic</span>&nbsp;&nbsp;&nbsp;<a href=""><i class="fa fa-share-square"></i></a><br>
+        <span><i class="fa fa-rocket"></i>&nbsp; High Engagement Topic</span>&nbsp;&nbsp;&nbsp;<a href=""><i class="fa fa-share-square"></i></a><br>
+        <span><i class="fa fa-lock"></i>&nbsp; Closed Topic</span>&nbsp;&nbsp;&nbsp;<a href=""><i class="fa fa-share-square"></i></a><br>
+    </div>
+
+    <footer>
+        <span>&copy;  Selmi Abderrahim | All Rights Reserved</span>
+    </footer>
+    <script src="{% static 'js/main.js' %}"></script>
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('.link-delete').on("click", function(e){
+        var token = '{{csrf_token}}';
+        e.preventDefault();
+        var $this = $(this);
+        if(confirm("Are you sure")){
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url:$this.attr("href"),
+            type: "POST",
+            dataType: "json",
+            success: function(resp){
+                if(resp.message == 'success'){
+
+                    $this.parents('.table-row').remove();
+
+
+
+                }
+                else{
+                alert(resp.message);
+                }
+
+            },
+            error: function(resp){
+            console.log("Something went wrong");
+            }
+        });
+
+        }
+        return false;
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends 'baseforum.html' %}
+{% block title %}
+<title>Forum home</title>
+{% endblock %}
+{% block content %}
+<h1>Posts</h1>
+<ul>
+{% for instance in object_list %}
+   <li> <a href="{% url 'forums:Post_detail' instance.pk %}">{{ instance.title }}</a>  - {{ instance.author.Username }} <br>
+    {{ instance.body }}
+   </li>
+{% endfor %}
+</ul>
+{% endblock %}

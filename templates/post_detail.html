@@ -1,0 +1,22 @@
+{% extends 'baseforum.html' %}
+{% block title %}
+<title>{{ post.title }}</title>
+{% endblock %}
+{% block content %}
+<h1>{{ post.title }}</h1>
+<small> By: {{ post.author.Username }} </small>
+<p>{{ post.body }}</p>
+<a href="{% url 'forums:forum' %}"  class="btn btn-secondary" >Back</a>
+<br>
+<br><br>
+<form action="{% url 'forums:like_post' post.pk %}" method="post">
+{% csrf_token %}
+
+    {% if liked %}
+    <button class="btn btn-primary btn-sm" type="submit" name="Post_like" value="{{ post.id }}">UnLike</button>
+    {% else %}
+    <button class="btn btn-primary btn-sm" type="submit" name="Post_like" value="{{ post.id }}">Like</button>
+    {% endif %}
+ Likes : {{ total_likes }}
+</form>
+{% endblock %}
