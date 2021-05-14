@@ -289,7 +289,7 @@ def casual(request):
 
 
 def lives(request):
-    if request.session.get("userid") or request.session.get('RoleName') == "User":
+    if request.session.get("userid") and request.session.get('RoleName') == "User":
         userid = request.session.get("userid")
         Userdetails = Userreg.objects.get(id=userid).user_thumbnail
         var = Game_Statistics.objects.filter(Game_ID__Game_Mode_ID=3, Game_ID__User_ID=userid).order_by('-Date')[
