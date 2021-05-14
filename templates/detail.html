@@ -1,152 +1,466 @@
 <!DOCTYPE html>
 {% load static %}
-
+{% load staff_tags %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum</title>
-    <link rel="stylesheet" href="{% static 'css/Styleforum.css' %}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Latest Posts | FORUMS</title>
+        <link rel="stylesheet" href="{% static 'css/Styleforum.css' %}">
+        <script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+        <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+      <link rel="stylesheet" href="{% static 'css/userprofilestyle.css' %}">
+        <link rel="stylesheet" href="{% static 'css/forumcss/detail.css' %}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
-
-
-
-
-</head>
+    </head>
 
 <body>
 
+    
     <header>
         <!--NavBar Section-->
         <div class="navbar">
             <nav class="navigation hide" id="navigation">
                 <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
                 <ul class="nav-list">
-                    <li class="nav-item"><a href="forums.html">Forums</a></li>
-                    <li class="nav-item"><a href="posts.html">Posts</a></li>
-                    <li class="nav-item"><a href="detail.html">Detail</a></li>
+                    <li class="nav-item"><a href="categories">Forums</a></li>
+                    <li class="nav-item"><a href="my_posts">My Posts</a></li>
+      
                 </ul>
             </nav>
+            
             <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
-            <div class="brand">My Forum</div>
+          <div class="brand"><img src="{% static 'images/logo.png' %}" width="150px"/></div>
+
+
+    {% if request.session.Username %}
+
+    
+
+
+          <div class="account-info"> 
+
+            <div class="dropdown" style="float:right;">
+                <button class="fas fa-sort-down" style="color: #FF0042;"></button>
+                <div class="dropdown-content">
+                  <a href="my_profile">My profile</a>
+                  <a href="{% url 'signout' %}">Sign out</a>
+                
+                </div>
+              </div>
+
+
+
+        <img style="border-radius: 50%;" width="20px" height="20px" src="{{ Userdetails.url }}">  {{ request.session.Username }}<h5 class="account-sub">{{ request.session.Useremail }}</h5>
+
+
+              {% else %}
+             
+                  <div class="account-info">
+            
+                    
+                    <a href="{% url 'signin' %}">Login</a> &nbsp;&nbsp;<span style="font-size: 18px;">OR</span>&nbsp;&nbsp;  <a href="{% url 'signup' %}">Register</a>  </div>
+
+
+          {% endif %}
+        
         </div>
-        <!--SearchBox Section-->
-        <div class="search-box">
-            <div>
-                <select name="" id="">
-                    <option value="Everything">Everything</option>
-                    <option value="Titles">Titles</option>
-                    <option value="Descriptions">Descriptions</option>
-                </select>
-                <input type="text" name="q" placeholder="search ...">
-                <button><i class="fa fa-search"></i></button>
+        </div>
+
+{% if request.session.userid %}
+        <div class="icon" onclick="toggleNotifi()" style="position: absolute; right: 40px;">
+            <span  style="font-family: 'bebas neue'; font-size: 20px;"><i class="fas fa-bell"></i>&nbsp;&nbsp;<span id="countnot">{{ count_notifications }}</span></span>
+       </div>
+
+  {% endif %}
+  <div class="notifi-box" id="box" style="background-color: black; z-index: 3;">
+
+  <div style="background-color: #262020;"><h2 style="font-size: 18px; font-family: 'bebas neue';">Notifications <span style="float: right;"> <a onclick="clearall()"><img height="20px;"  width="20px;" src="{% static 'images/clearall.png' %}"></a>  </span> </h2></div>
+        {% for instance in notifi_text %}
+  <div class="notifi-item">
+  
+   <div class="text"  id="clickread"  onclick="readnotification('{{ instance.post_id }}','{{ instance.pk }}', '{{ instance.sender_id }}', '{{ instance.user_id }}' )" >
+      <h4 style="font-family: Arial, Helvetica, sans-serif">Post &nbsp;<span style="color: white;">{{ instance.post.title }}</span></h4>
+      <p style="font-family: Arial, Helvetica, sans-serif;">{{ instance.text_preview }} </p> <p style="font-family: Arial, Helvetica, sans-serif;">{{instance.date}}</p>
+     </div>
+
+  </div>
+       {% endfor %}
+  
+
+  
+  </div>
+
+
+
+
+        </div>
+        <div class="navigate header2">
+            <span><a href="categories" style="cursor: pointer;">&nbsp;&nbsp;&nbsp;Forums</a> > <a href="#" style="cursor: pointer;">Latest posts</a></span>
+        </div> 
+    </header>
+    
+
+    
+
+
+<a href="{% url 'room' %}"
+  target="popup" 
+  onclick="window.open('{% url 'room' %}','popup','width=1200,height=600');"><button class="chatbutton"><i class="far fa-comment-dots"></i>&nbsp;Chat</button></a>
+
+
+ <div class="containerprofile">
+     <div class="modal">
+        <img id="userimageuserprofile2"  src="" alt="">
+        <div class="close"></div>
+    </div>
+
+
+        <div class="card">
+            <div class="header">
+               
+                <a style="cursor:pointer;" id="close" class="mail">
+                    &times;
+                </a>
+                <div class="main">
+                    <div class="image">
+               <img  style='height: 100%; width: 100%; object-fit: contain' id="userimageuserprofile" class="profile-user-img img-fluid img-circle"
+                                         src=""
+                                         alt="User profile picture">
+                        <div class="hover">
+
+                            <i class="fas fa-camera fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 id="fullnameuserprofile" class="name"></h3>
+                    <h3 id="usernameuserprofile" class="sub-name"></h3>
+                </div>
             </div>
 
-        </div>
+            <div class="contentuser">
+                <div class="left">
+                    <div class="about-container">
+                        <h3 class="title">About</h3>
+                        <p id="userroleuserprofile" class="text"></p>
+                    </div>
 
 
-        <section class="container" >
-      <div class="latest-posts">
-        <header>
-          <h2>Latest from the forum</h2>
-          <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-        </header>
-      </div>
-    <div class= "grid-container">
-
-          {% for obj in latest %}
-          <div class="grid-item"  >
-                <div class="post-thumbnail"><a href="#"><img src=" " alt="..." class="img-fluid"></a></div>
-                <div class="post-details">
-                  <div class="justify-content-between">
-                    <div class="date">{{ obj.timestamp }}</div>
-                    <div class="category">
-                      {% for cat in obj.topic_title.topic_title%}
-                      <a href="#">{{ cat }}</a>
-                      {% endfor %}
-                      </div>
-                  </div><a href="#">
-                    <h3 class="h4">{{ obj.title }}</h3></a>
-                  <p class="text-muted">{{ obj.overview|linebreaks|truncatechars:200 }}</p>
                 </div>
-          </div>
-          {% endfor %}
+
+                <div class="right">
+                    <div>
+                        <h3 id="postnumbers" class="number">91</h3>
+                        <h3 class="number-title">Posts</h3>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 
 
 
-    </section>
 
 
-    <div class="container">
-        <!--Navigation-->
-        <div class="navigate">
-            <span><a href="">MyForum - Forums</a> >> <a href="">random subforum</a> >> <a href="">random topic</a></span>
-        </div>
-<a href="forum-create.html"> <button> Create New Post</button></a>
-        <!--Topic Section-->
-        <div class="topic-container">
-            <!--Original thread-->
-            <div class="head">
-                <div class="authors">Author</div>
-                <div class="content">Topic: random topic (Read 1325 Times)</div>
+  <section class="container" >
+    <div class="latest-posts">
+      
+        <h2>Latest from the forum</h2>
+        <p class="account-info-sub2">Stay up to date with the latest announcements and community interactions</p>
+      
+    </div>
+
+
+
+  </section>
+
+
+
+  
+  
+        <!--SearchBox Section-->
+
+
+
+<center>
+        <div id="search" class="search-box" style="margin-top: 10px">
+            <div>
+                <form>
+                <select class="filterby" id="">
+                    <option selected value="Titles">Titles</option>
+                    <option value="Descriptions">Descriptions</option>
+                </select>
+
+                <input type="text" name="search_here"  id="search_here" placeholder="Start typing anything">
+
+                    </form>
             </div>
-{% for instance in item %}
-            <div class="body">
+</div>
+</center>
 
 
-                <div class="authors">
-                    <div class="username">
+  <div class="container">
 
-   {{ instance.author.Username }} <br>
+    <div class="topic-container">
+        <div class="head">
+            <div class="authors">Author</div>
+            <div class="content-title">Posts</div>
+           
 
-
-                    </div>
-                    <div>{{ instance.author.Role_id }} </div>
-
-
-                    <img src="{{ instance.author.thumbnail.url }}" alt="error">
-                    <div>Posts: <u>45</u></div>
-                    <div>Points: <u>4586</u></div>
-                </div>
-                <div class="content">
-<a href="{% url 'forums:Post_detail' instance.pk %}">
-                   {{ instance.title }} .
-    </a>
-                    <br><br>
-
-                    <br>
-                    <hr>
- {{ instance.body }}
-                    <br><br><br>
-
-
-
-            </div>
+          
 
         </div>
+        {% for instance in item %}
+        <div class="post">
+        <div class="body">
+
+
+            <div class="authors">
+
+
+                <div class="row">
+
+                        <img class="account-info-sub2" style="border-radius:50%" src="{{ instance.author.user_thumbnail.url }}" alt="error">
+
+
+                        <div class="username"> <a style="color:white;cursor:pointer;" onclick="openmodal( {{ instance.author.id }})"> {{ instance.author.Username }} </a>
+
+                            <br>
+                         
+                         
+                                             </div>
+                                            <div class="rolemob">
+                                             <div class="account-info-sub2">{{ instance.author.Role.RoleName }} </div>
+                                            </div>
+
+
+                  </div>
+
+<br>
+                
+       
+  {% countpostsforusers instance.author as add_users_flag %}
+  {% countpointsforusers instance.author as points %}
+               
+                <div class="account-info-sub2">Posts: <span class="pointsposts">{{ add_users_flag }}</span></div>
+                {% if points %}
+                <div class="account-info-sub2">Points: <span class="pointsposts">{{ points }}</span> </div>
+                {% endif %}
+            </div>
+            <div class="content">
+<a class="content-link" href="{% url 'forums:Post_detail' instance.pk %}">
+               {{ instance.title }} 
+</a>
+                <br>
+                <p class="content-body"> {{ instance.body|safe }}</p><br>
+               <hr class="hrstyle">
+               
+               <P class="post-timestamp">posted on {{ instance.timestamp }}</P>
+                <br><br>
+
+        </div>
+
+    </div>
+</div>
 
 
         {% endfor %}
 
+<div class="footer-number">
+        {% if page.has_next %}
+        <a href="{% url 'forums:forum' %}?page={{page.next_page_number}}">Next Page</a>
+         {% endif %}
 
-{% if page.has_previous %}
-<a href="{% url 'forums:forum' %}?page={{page.previous_page_number}}">Previous Page</a>
- {% endif %}
-{% if page.has_next %}
-<a href="{% url 'forums:forum' %}?page={{page.next_page_number}}">Next Page</a>
- {% endif %}
-            {{ numberofpage }}
+        {% if page.has_previous %}
+        &nbsp;|&nbsp;<a href="{% url 'forums:forum' %}?page={{page.previous_page_number}}">Previous Page</a>
+         {% endif %}
+
+         
+</div>
+      
+                    
     </div>
 
-
-    <footer>
-        <span>&copy;  AimLab | All Rights Reserved</span>
-    </footer>
+    </div>
+   
+    <div id="page-container">
+        <div id="content-wrap">
+        </div>
+        
+      <footer id="footer">
+        <span>&copy; 2021 AIMARENA. All Rights Reserved</span>
+      </footer>
+      </div>
     <script src="{% static 'js/forummain.js' %}"></script>
+     <script src="{% static 'js/userprofile.js' %}"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/forumjs/detail.js' %}"></script>
+    <script>
+
+var csrftoken = '{{ csrf_token }}';
+    const searchField = document.querySelector('#search_here');
+   var selectedoption= $(".filterby").children("option:selected").val();
+
+      $(document).ready(function(){
+            $("select.filterby").change(function(){
+                selectedoption= $(this).children("option:selected").val();
+                console.log(selectedoption);
+            });
+        });
+
+
+    searchField.addEventListener('keyup',(e)=> {
+    const searchValue= e.target.value;
+
+    if(searchValue.length>0){
+    console.log(searchValue);
+        if(selectedoption == "Titles"){
+
+            console.log(selectedoption);
+        filterbytitle();
+        }else if(selectedoption == "Descriptions"){
+
+            console.log(selectedoption);
+        filterbydescription();
+        }
+    }
+    else if(searchValue.length == 0){
+
+             $(".topic-container").html('<div class="topic-container">\
+        <!--Original thread-->\
+        <div class="head">\
+            <div class="authors">Author</div>\
+            <div class="content-title">Posts</div>\
+        </div>\
+        {% for instance in item %}\
+        <div class="post">\
+        <div class="body">\
+            <div class="authors">\
+                <div class="row">\
+                        <img class="account-info-sub2" style="border-radius:50%" src="{{ instance.author.user_thumbnail.url }}" alt="error">\
+                        <div class="username"> <a style="color:white;cursor:pointer;" onclick="openmodal( {{ instance.author.id }})"> {{ instance.author.Username }} </a>\
+                            <br>\
+                                             </div>\
+                                             <div class="account-info-sub2">{{ instance.author.Role.RoleName }} </div>\
+                  </div>\
+<br>\
+  {% countpostsforusers instance.author as add_users_flag %}\
+  {% countpointsforusers instance.author as points %}\
+                <div class="account-info-sub2">Posts: <span class="pointsposts">{{ add_users_flag }}</span></div>\
+                {% if points %}\
+                <div class="account-info-sub2">Points: <span class="pointsposts">{{ points }}</span> </div>\
+                {% endif %}\
+            </div>\
+            <div class="content">\
+<a class="content-link" href="{% url 'forums:Post_detail' instance.pk %}">\
+               {{ instance.title }} \
+</a>\
+                <br>\
+                <p class="content-body"> {{ instance.body|safe|escapejs }}</p><br>\
+               <hr class="hrstyle">\
+               <P class="post-timestamp">posted on {{ instance.timestamp }}</P>\
+                <br><br>\
+        </div>\
+    </div>\
+</div>\
+        {% endfor %}\
+        <div class="footer-number">\
+        {% if page.has_next %}\
+        <a href="{% url 'forums:forum' %}?page={{page.next_page_number}}">Next Page</a>\
+         {% endif %}\
+         {% if page.has_previous %}\
+         &nbsp;|&nbsp;<a href="{% url 'forums:forum' %}?page={{page.previous_page_number}}">Previous Page</a>\
+         {% endif %}\
+         </div>\
+                    \
+    </div>');
+
+          }
+
+
+
+     function filterbytitle() {
+                $.ajax( {
+                type :"POST",
+                url:"{% url 'forums:search_post' %}",
+                datatype :'html',
+                data : {
+                "selectedoption":selectedoption,
+                   "search_text":   $("#search_here").val(),
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success :function(response){
+
+
+
+
+              if(response.filtereddata != "No Posts found!"){
+                  $(".topic-container").html(response);
+
+
+
+
+
+            }else{
+            _nopost='<div class="topic-container"><h1>No Posts found! </h1></div>';
+
+            $(".topic-container").html(_nopost);
+            }
+
+                },
+                error: function(rs, e){
+                   console.log("oops error!");
+                  },
+
+                });
+        }
+})
+
+
+
+     function filterbydescription() {
+               $.ajax( {
+                type :"POST",
+                url:"{% url 'forums:search_post' %}",
+                datatype :'html',
+                data : {
+                "selectedoption":selectedoption,
+                   "search_text":   $("#search_here").val(),
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success :function(response){
+
+
+
+
+              if(response.filtereddata != "No Posts found!"){
+  $(".topic-container").html(response);
+
+
+
+
+            }else{
+            _nopost='<div class="topic-container"><h1>No Posts found!</h1> </div>';
+
+            $(".topic-container").html(_nopost);
+            }
+
+                },
+                error: function(rs, e){
+                   console.log("oops error!");
+                  },
+
+                });
+                }
+
+
+
+    </script>
+
+
 
 
 </body>

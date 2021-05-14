@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chatroom</title>
+
+</head>
+<body>
+<div class="header">{{other_user.Username}}</div>
+<div class="message-area">
+{% for message in messages %}
+<div class="message
+    {% if message.sender == request.session.Username %}right {% else %}left {% endif %} ">
+
+    <div class="sent_by">{{ message.sender.Username }}</div>
+    <div class="content">{{ message.message }}</div>
+</div>
+<div class="input_area">
+    <input type="text" id="message-input">
+    <button id="send-btn">send</button>
+</div>
+{% endfor %}
+    </div>
+</body>
+</html>

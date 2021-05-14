@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+{% load static %}
+{% load staff_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | FORUMS</title>
+   <link rel="stylesheet" href="{% static 'css/Styleforum.css' %}">
+   <script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+    <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+     <link href="{% static 'css/forumcss/forums.css' %}"  rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+     <script src="{% static 'js/forumjs/forums.js' %}"></script>
+
+
+</head>
+
+<body>
+
+    <header>
+        <!--NavBar Section-->
+        <div class="navbar">
+            <nav class="navigation hide" id="navigation">
+                <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="categories">Forums</a></li>
+                    <li class="nav-item"><a href="my_posts">My Posts</a></li>
+               
+                </ul>
+            </nav>
+            <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+          <div class="brand"><img src="{% static 'images/logo.png' %}" width="150px"/></div>
+          
+          
+
+
+
+
+
+
+
+
+
+
+
+          {% if request.session.Username %}
+
+    
+
+
+          <div class="account-info"> 
+
+            <div class="dropdown" style="float:right;">
+                <button class="fas fa-sort-down" style="color: #FF0042;"></button>
+                <div class="dropdown-content">
+                  <a href="my_profile/">My profile</a>
+                  <a href="{% url 'signout' %}">Sign out</a>
+                
+                </div>
+              </div>
+
+
+
+
+              </i><img style="border-radius: 50%;" width="20px" height="20px" src="{{ Userdetails.url }}"> {{ request.session.Username }}<h5 class="account-sub">{{ request.session.Useremail }}</h5>
+
+
+              {% else %}
+             
+                  <div class="account-info">
+            
+                    <br>
+                    <a href="{% url 'signin' %}">Login</a> &nbsp;&nbsp;<span style="font-size: 18px;">OR</span>&nbsp;&nbsp;  <a href="{% url 'signup' %}">Register</a>  </div>
+
+
+          {% endif %}
+        
+        </div>
+
+        </div>
+
+      
+
+        {% if request.session.userid %}
+        <div class="icon" onclick="toggleNotifi()" style="position: absolute; right: 0px; top: 105px;">
+          <span style="font-family: 'bebas neue'; font-size: 20px;"><i class="fas fa-bell"></i>&nbsp;&nbsp;{{ count_notifications }}</span>
+     </div>
+     {% endif %}
+<div class="notifi-box" id="box" style="background-color: black;">
+<div style="background-color: #262020;"><h2 style="font-size: 18px; font-family: 'bebas neue';">Notifications <span style="float: right; font-size: 15px; font-family: 'bebas neue';">{{ count_notifications }}</span></h2></div>
+      {% for instance in notifi_text %}
+<div class="notifi-item">
+
+ <div class="text">
+    <h4 style="font-family: Arial, Helvetica, sans-serif">Post &nbsp;<span style="color: white;">{{ instance.post.title }}</span></h4>
+    <p style="font-family: Arial, Helvetica, sans-serif;">{{ instance.text_preview }} </p> <p style="font-family: Arial, Helvetica, sans-serif;">{{instance.date}}</p>
+   </div>
+
+</div>
+     {% endfor %}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+        <!--SearchBox Section-->
+
+        <div class="navigate header2" style="margin-bottom: 0px;">
+            <span><a href="#">&nbsp;&nbsp;&nbsp;Forums</a> > <a href="categories">Main</a> </span>
+        </div> 
+    </header>
+
+
+
+<a href="{% url 'game' %}">
+<div class="homepagebanner">
+  <h1 style="font-weight: lighter; text-align: center; padding-top: 20px; padding-bottom: 20px; color: white;">Homepage</h1>
+</div>
+</a>
+
+
+<div class="welcome">
+
+Welcome to the AIMARENA&copy; Forums <br><br>
+
+This forum was developed due to popular demand for a positive and productive place to discuss everything related to AIMARENA.
+
+That's what this forum is all about! Positive solutions and respect for other members is the key to getting along in AIMARENA Forum. Hope you all contribute and enjoy the ambiance!
+
+
+
+</div>
+
+
+
+
+ 
+
+    <div class="row" id="recentid" style="margin-left: 50px; margin-right: 50px; margin-top: 50px;">
+      <div class="column"><h1 style="color: white;">Recent posts</h1></div>
+      <div class="column">
+        
+        
+        
+       <a id="ViewMore" style="float: right; font-weight: bold; font-family: 'Bebas Neue'; font-size: 24px;">Show/Hide latest&nbsp;&nbsp;</a>
+      
+       <a href="../forum/" style="float: right; font-weight: bold; font-family: 'Bebas Neue'; font-size: 24px;">View all&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+      
+      </div> 
+    </div>
+
+
+
+    <a href="{% url 'room' %}"
+    target="popup" 
+    onclick="window.open('{% url 'room' %}','popup','width=1200,height=600');"><button class="chatbutton"><i class="far fa-comment-dots"></i>&nbsp;Chat</button></a>
+
+
+
+    <div class= "grid-container" style="display: none;">
+
+
+        {% for obj in latest %}
+        
+        <div class="grid-item">
+        
+              <div class="post-details2" style="background-image: url('{{ obj.author.user_thumbnail.url }}'); background-blend-mode: soft-light; background-color: rgba(0, 0, 0, 0.671); background-size: cover; background-repeat: no-repeat;">
+                <div class="justify-content-between" style="padding-top: 10px; padding-bottom: 10px;">
+                  <a href="{% url 'forums:Post_detail' obj.id %}">
+                    <h3 class="h4">{{ obj.title|truncatechars:10 }}</h3></a>
+            
+                    <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;">   posted by <span style="font-family: 'Bebas Neue'; font-size: 18px;">&nbsp;<img src="{{ obj.author.user_thumbnail.url }}" width="20px" style="border-radius: 20px; vertical-align: middle;"/> {{ obj.author.Username }}</span></p>
+                    <div class="date">on {{ obj.timestamp }}</div>
+              
+                
+                </div>
+                 <!-- <div class="date">{{ obj.timestamp }}</div> -->
+                </div>
+        </div>
+       
+   
+
+
+        {% endfor %}
+
+
+      
+      
+        
+      
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+        {% for instance in obj %}
+
+
+
+
+        <div class="subforum">
+            <div class="subforum-title">
+
+            <h4>&nbsp;{{ instance.topic_title }}</h4>
+            </div>
+
+
+
+              {% for sub_instance in instance.topic_subtopic.all %}
+            {% checksubtopicvisiblity sub_instance.slug as topicvisibility %}
+           {% checksubtopicdeleted sub_instance.slug as topicdeleted %}
+           {% if topicdeleted == False %}
+            {% if topicvisibility == False %}
+           
+
+
+            <div class="subforum-row">
+
+
+
+
+
+                <div class="subforum-description subforum-column">
+
+                    <h1><a href="{% url 'forums:forumcategroieseach' sub_instance.slug %}">{{ sub_instance.sub_topic_title }}</a></h1>
+                    <p class="topic-description">{{ sub_instance.sub_topic_description }} .</p>
+                </div>
+
+                <div class="subforum-stats subforum-column center">
+                    <span>{{ sub_instance.topic_title_post.count }} Posts&nbsp;</span>
+                    {% if request.session.userid %}
+ {% newposts sub_instance.id request.session.userid as add_users_flag %}
+ {% endif %}
+                     {% if add_users_flag %}
+<span style="width:25px"><img width="15px" height="15px" src="{% static 'images/bell2.png' %}"></span>
+
+            {% endif %}
+                </div>
+             
+            </div>
+{% endif %}{% endif %}
+               {% endfor %}
+        </div>
+        <!--More-->
+        {% endfor %}
+
+        <!---->
+    </div>
+
+  
+
+
+        <div class="posts-table" style="margin:35px;">
+            <div class="table-head">
+
+                <div class="subjects">&nbsp;&nbsp;<a>Roles</a></div>
+
+            </div>
+  {% for i in roleslist %}
+            <div class="table-row">
+
+                <div class="subjects" style="padding-left: 10px;">
+
+    {% if i.RoleName == "User" %}
+    <h1 style="font-size: 24px;" class=" ">{{ i.RoleName }}</h1>
+    {% elif i.RoleName == "Admin" %}
+    <h1 style="font-size: 24px;" class=" ">{{ i.RoleName }}</h1>
+    {% elif i.RoleName == "Customer Service" %}
+    <h1 style="font-size: 24px;" class=" ">{{ i.RoleName }}</h1>
+    {% elif i.RoleName == "Forum Moderator" %}
+    <h1 style="font-size: 24px;" class=" ">{{ i.RoleName }}</h1>
+    {% endif %}
+
+
+                </div>
+
+            </div>
+{% endfor %}
+
+            <!--ends here-->
+        </div>
+
+<br>
+
+
+
+<div id="page-container">
+    <div id="content-wrap">
+    </div>
+    
+  <footer id="footer">
+    <span>&copy; 2021 AIMARENA. All Rights Reserved</span>
+  </footer>
+  </div>
+
+
+
+
+
+
+    <script src="{% static 'js/forummain.js' %}"></script>
+</body>
+</html>

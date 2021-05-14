@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+{% if request.session.userid %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title> User profile | AIMARENA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+    <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/forumcss/userprofile.css' %}">
+
+</head>
+
+<body>
+
+<div class="myprofilehead text-light container-fluid">
+
+<div class="row">
+
+<div class="col-12 text-center"> <img src="{% static 'images/logoprof.png' %}" width="150px"></div>
+
+</div>
+
+</div>
+
+{% for obj in permission %}
+
+
+<div class="container">
+
+    <div class="main-body">
+
+      <nav aria-label="breadcrumb" style="font-family: 'Bebas Neue'; font-size: 20px;">
+        <ol class="breadcrumb inner" style="padding: 10px">
+          <li class="breadcrumb-item"><a onClick="javascript:history.go(-1)"; style="color: white;">GO BACK</a></li>
+
+          <li class="breadcrumb-item active" aria-current="page" style="color: rgb(187, 187, 187);">USER PROFILE</li>
+        </ol>
+      </nav>
+
+     <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #f62541">
+                        <h5 class="modal-title">Edit Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                      {% for instance in item %}
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label required">First Name</label>
+                                <input id="firstname" type="text" class="form-control" value="{{ instance.Firstname }}">
+                            </div>
+                                <div class="mb-3">
+                                <label class="form-label required">Last Name</label>
+                                <input id="lastname" type="text" class="form-control" value="{{instance.Lastname}}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Email</label>
+                                <input id="email" type="email" class="form-control" value="{{instance.Useremail}}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Password</label>
+                                <input id="password" type="text" class="form-control" value="">
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button id="submitedits" onclick="editmyprofile();" type="submit"  class="btn btn-third">Submit</button>
+                        <button type="submit" data-bs-dismiss="modal" class="btn btn-third">Cancel</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+
+                 <div class="image-upload">
+                     <form onsubmit="onformsubmit(event)" enctype="multipart/form-data">
+                  <label for="file-input">
+
+
+                    <img  id="blah" src="{{ instance.user_thumbnail.url }}" alt="user pic" class="rounded-circle" width="150" style="cursor:pointer;"/>
+
+
+
+                  </label>
+
+                  <input style="display:none;" id="file-input" type="file" name="file-input" accept="image/*" />
+                       <br>
+                         <button id="submitimage" name="submitimage" class="buttonsubmit" type="submit">Submit</button>
+
+<div id="progress-div" class="form-group" style=" display:none;">
+<div class="progress">
+  <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+    <div id="success"></div>
+</div>
+
+                   </form>
+                </div>
+  <h4>{{ instance.Username }}</h4>
+  <p class="text-secondary mb-1">{{ instance.Role.RoleName }}</p>
+
+    {% if obj.permission_name == "Forum moderator page" or obj.permission_name == "Admin page" or obj.permission_name == "Customer Service page" %}
+
+    {% else %}
+
+          {% for i in rankinfo %}
+          {% if i.Rank_id__Rank_image %}
+          <img width="70px" height="70px" src="/media/{{ i.Rank_id__Rank_image }}">
+        <p class="text-muted font-size-sm">{{ i.Rank_id__Rank_Name }}</p>
+        {% endif %}
+                        {% endfor %}
+    {% endif %}
+     {% endfor %}
+<br>
+
+<button id="editprofile" type="button" class="btn btn-third"  data-bs-toggle="modal" data-bs-target="#myModal">Edit Profile</button>
+       </div>
+                </div>
+              </div>
+{% if obj.permission_name == "Forum moderator page" or obj.permission_name == "Admin page" or obj.permission_name == "Customer Service page" %}
+{% else %}
+              <div class="card mt-3 p-3">
+             <div class="card-header">
+
+
+                <div class="card-tools">
+                    <center>
+                  <h3>Accuracy per game</h3>
+                    <h6>Last 6 Games</h6>
+                        </center>
+                </div>
+              </div>
+             <canvas  style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 437px; " id="myChart"></canvas>
+
+              </div>
+{% endif %}
+
+            </div>
+               {% for instance in item %}
+            <div class="col-md-8">
+              <div id="clone" class="card mb-3">
+                <div class="card-body">
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">First Name</h6>
+                    </div>
+
+                    <div class="col-sm-9 text-third">
+                      {{ instance.Firstname }}
+                    </div>
+                  </div>
+                  <hr>
+                         <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Last Name</h6>
+                    </div>
+
+                    <div class="col-sm-9 text-third">
+                    {{ instance.Lastname }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-third">
+                      {{ instance.Useremail }}
+                    </div>
+                  </div>
+                  <hr>
+
+
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Password</h6>
+                    </div>
+                    <div class="col-sm-9 text-third">
+                      ***
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Date created</h6>
+                    </div>
+                    <div class="col-sm-9 text-third">
+                      {{ instance.datecreated }}
+                    </div>
+                  </div>
+                      <hr>
+                      <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Forum Posts</h6>
+                    </div>
+                    <div class="col-sm-9 text-third">
+                      40
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Role</h6>
+                    </div>
+                    <div class="col-sm-9 text-third">
+                      {{ instance.Role.RoleName }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+                {% endfor %}
+
+
+{% if obj.permission_name == "Forum moderator page" or obj.permission_name == "Admin page" or obj.permission_name == "Customer Service page" %}
+{% else %}
+              <div class="row gutters-sm">
+                                   <div class="mt-3">
+
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons mr-2">All Averages </i></h6>
+                        {% for i in info %}
+                      <small>Accuracy average</small>
+
+                      <div class="progress mb-3" style="height: 15px">
+                        <div class="progress-bar" role="progressbar" style="width: {{ i.Accuracy_Avg }}%; background-color:#f62541 !important;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{ i.Accuracy_Avg }}%</div>
+                      </div>
+                      <small>Score Average</small>
+                      <div class="progress mb-3" style="height: 15px">
+                        <div id="scoreexp" class="progress-bar" role="progressbar" style="width: {{ i.Score_Avg }}%; background-color:#f62541 !important;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="7"> {{ i.Score_Avg|floatformat  }} Exp</div>
+                      </div>
+                      <small>Shots Average</small>
+                      <div class="progress mb-3" style="height: 15px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ i.Shots_Avg }}%; background-color:#f62541 !important;" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100">{{ i.Shots_Avg|floatformat  }}%</div>
+                      </div>
+                      <small>Hits Average</small>
+                      <div class="progress mb-3" style="height: 15px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ i.Hits_Avg }}%; background-color:#f62541 !important;" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">{{ i.Hits_Avg|floatformat  }}%</div>
+                      </div>
+
+                        {% endfor %}
+                    </div>
+                  </div>
+              </div>
+              </div>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+    </div>
+   <div>
+<br><br><br><br><br><br><br><br><br><br>
+<script>
+<!--It is mandatory to add these scripts inside the html page due to django purposes-->
+
+
+
+
+
+onformsubmit= function(e){
+ e.preventDefault();
+var formData = new FormData();
+formData.append("image", document.getElementById("file-input").files[0]);
+console.log(formData);
+var xhr = new XMLHttpRequest();
+xhr.open("POST", "{% url 'forums:user_image_view' %}", true );
+
+
+
+xhr.upload.onprogress = function(evt)
+{
+    if (evt.lengthComputable)
+    {   var percentComplete = parseInt((evt.loaded / evt.total) * 100);
+
+    document.getElementById("progress-div").style["display"] = "block";
+    document.getElementById("progress-div").style["width"] ="100%" ;
+    document.getElementById("progress-bar").style["width"]=""+percentComplete+"%"
+    if(evt.loaded  == evt.total ){
+    document.getElementById("success").innerHTML = "Image uploaded successfully";
+    }else{
+     document.getElementById("success").innerHTML = "Error while uploading image";
+    }
+        console.log("Upload: " + percentComplete + "% complete")
+    }
+
+}
+xhr.send(formData);
+document.getElementById('submitimage').style.display = "none";
+
+document.getElementById('file-input').value='';
+}
+
+
+
+
+
+
+
+var csrftoken ='{{ csrf_token }}';
+var x = 1;
+       var ctx = document.getElementById('myChart').getContext('2d');
+      var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+
+
+            labels: [ {% for i in gamestats reversed %} "Game "+  x++ ,    {% endfor %}],
+
+            datasets: [{
+
+                data: [{% for i in gamestats reversed %} {{ i.Accuracy }},   {% endfor %} ,
+
+                ],
+
+                label: "Accuracy",
+                borderColor: "rgb(246, 37, 65)",
+                backgroundColor: "rgb(246, 37, 65,0.1)",
+              }
+            ]
+          },
+        });
+  function editmyprofile() {
+   var firstname = $("#firstname").val();
+  var lastname = $("#lastname").val();
+ var email = $("#email").val();
+  var password = $("#password").val();
+          $.ajax({
+
+                type :"POST",
+                url:" {% url 'forums:editprofile' %}",
+                data : {
+                    'firstname':$("#firstname").val(),
+                    'lastname':$("#lastname").val(),
+                    'email':$("#email").val(),
+                    'password':$("#password").val(),
+
+                  'csrfmiddlewaretoken': csrftoken,
+                },
+
+                success :function(response){
+                 $('#myModal').modal('hide');
+
+
+                $("#clone").html('<div class="alert alert-success">\
+                   Profile is updated successfully!.\
+                </div>\
+                <div class="card-body">\
+                      <div class="row">\
+                        <div class="col-sm-3">\
+                          <h6 class="mb-0">First Name</h6>\
+                        </div>\
+                        <div class="col-sm-9 text-secondary">\
+                          '+firstname+'\
+                        </div>\
+                      </div>\
+                  <hr>\
+                   <div class="row">\
+                        <div class="col-sm-3">\
+                          <h6 class="mb-0">Last Name</h6>\
+                        </div>\
+                        <div class="col-sm-9 text-secondary">\
+                        '+lastname+'\
+                        </div>\
+                      </div>\
+                  <hr>\
+                      <div class="row">\
+                        <div class="col-sm-3">\
+                          <h6 class="mb-0">Email</h6>\
+                        </div>\
+                        <div class="col-sm-9 text-secondary">\
+                          '+email+'\
+                        </div>\
+                      </div>\
+                  <hr>\
+                      <div class="row">\
+                        <div class="col-sm-3">\
+                          <h6 class="mb-0">Password</h6>\
+                        </div>\
+                        <div class="col-sm-9 text-secondary">\
+                          **\
+                        </div>\
+                      </div>\
+                  <hr>\
+                    {% for instance in item %}\
+                      <div class="row">\
+                        <div class="col-sm-3">\
+                          <h6 class="mb-0">Date created</h6>\
+                        </div>\
+                        <div class="col-sm-9 text-secondary">\
+                          {{ instance.datecreated }}\
+                        </div>\
+                      </div>\
+                   <hr>\
+                      <div class="row">\
+                    <div class="col-sm-3">\
+                      <h6 class="mb-0">Role</h6>\
+                    </div>\
+                    <div class="col-sm-9 text-secondary">\
+                      {{ instance.Role.RoleName }}\
+                    </div>\
+                    {% endfor %}\
+                  </div>\
+                </div>\
+                ');
+                },
+                error: function(rs, e){
+                   console.log("oops error!");
+                  },
+
+           });
+
+}
+</script>
+
+    </div>
+{% endfor %}
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+
+<script src="{% static 'js/forumjs/userprofile.js' %}"></script>
+</body>
+<div id="page-container">
+  <div id="content-wrap">
+  </div>
+  
+<footer id="footer">
+  <span>&copy; 2021 AIMARENA. All Rights Reserved</span>
+</footer>
+</div>
+</html>
+{% endif %}

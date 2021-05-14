@@ -1,0 +1,118 @@
+{% load static %}
+
+
+<html lang="en">
+
+<head>
+
+
+    <meta charset="utf-8" />
+    <title>Canvas Rocks</title>
+    <style>
+        #canvas {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            cursor: none;
+            overflow: hidden;
+            background-color: black;
+        }
+
+        #Screen {
+            position: relative;
+        }
+
+        #popup {
+            position: absolute;
+            top: 500px;
+            left: 500px;
+            background-color: white;
+            width: 50px;
+            height: 50px;
+        }
+
+        #modalbtn {
+            position: fixed;
+            display: none;
+            background-color: white;
+        }
+
+        #modal {
+            position: fixed;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div id="Screen">
+        <canvas id="canvas" width="1000" height="600">  Your browser does not support the HTML5 canvas tag.</canvas>
+        <!--<div id="popup"></div>-->
+
+        <input type="hidden" value="" id="shots">
+        <input type="hidden" value="" id="hits">
+        <input type="hidden" value="" id="accuracy">
+
+        <span id="timer"></span></h5>
+
+        <!-- CODE FOR THE MODAL TO POP UP -->
+
+        <!-- Modal -->
+
+        <button type="button" id="modalbtn" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+
+        </button>
+
+        <div data-backdrop="static" data-keyboard="false" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <center><img width="20%" height="20%" id="rankimage" src="/media/default.jpg" ><br></center>
+                        <span> <b>Score :&nbsp</b></span>  <p id="scoretext"> </p>
+                       <span> <b>Accuracy :&nbsp</b></span>   <p id="accuracytext"> </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="Mainmenu" type="button" class="btn btn-secondary" data-dismiss="modal" >Main Menu</button>
+                        <button id="RestartGame" type="button" class="btn btn-primary " >Restart Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/nonmotiongame.js' %}"></script>
+
+      <script>
+            var spriteurl = "{% static 'images/sprite.png' %}";
+            var targeturl = "{% static 'images/target.gif' %}";
+            var explosionurl = "{% static 'images/explosion.png' %}";
+            var bang=  "{% static 'music/bang.wav' %}";
+            var saveurl = "{% url 'game:savescore' %}";
+            var csrftoken = '{{ csrf_token }}';
+
+        </script>
+
+</body>
+
+</html>

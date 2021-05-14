@@ -1,0 +1,35 @@
+
+         <div class="posts-table2">
+            <div class="table-head">
+
+                <div class="subjects">&nbsp;&nbsp;Posts</div>
+                <div class="replies">&nbsp;&nbsp;Replies/Views</div><br>
+
+
+            </div>   {% for instance in item %}
+
+
+
+            <div class="table-row">
+
+                <div class="subjects">
+                    <a href="{% url 'forums:Post_detail' instance.pk %}">
+                 <p class="text-title">  {{ instance.title }}</p>
+                    </a>
+                      <p class="text-body">{{ instance.body }}</p>
+
+
+                    <hr>
+
+                    <P class="post-timestamp modifications">posted on {{ instance.timestamp }}</P>
+
+                </div>
+                <div class="replies">
+                    <p class="values">  <i class="fas fa-comments fa-1x"></i>   &nbsp;&nbsp;&nbsp;{{ instance.Post.count }}  &nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-eye fa-1x"></i></i>&nbsp;&nbsp;&nbsp;125</p>
+                </div>
+
+            </div>
+
+
+</div>
+        {% endfor %}

@@ -1,0 +1,587 @@
+@media only screen and ( max-width: 640px ) {
+    #gamecontainer{
+        display: none;
+    }
+
+  body{
+      background-color: black;
+  }
+
+  }
+
+
+  @media only screen and ( min-width: 640px ) {
+    #mobileview{
+        display: none;
+    }
+
+  }
+
+body { padding-right: 0 !important }
+#mySidebar{
+    z-index: 2;
+}
+
+.icon-bar {
+    background-color: red;
+    color: white;
+    writing-mode: vertical-rl;
+    font-size: 18px;
+    padding: 5px;
+  position: fixed;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+
+#extrashidden{
+    display: none;
+}
+
+#hex{
+    display: none;
+
+}
+
+#color{
+    width: 25px;
+    height: 25px;
+    margin-bottom: 3px;
+    border: none;
+    padding: 0px;
+}
+
+#openm{
+    display: none;
+    opacity: 0px;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+.targetsp1{
+    background-color: transparent;
+    border: none;
+    background-image: url("/static/images/target3info.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 25px;
+    height: 25px;
+}
+
+
+
+
+
+
+
+
+.targetsp2{
+    background-color: transparent;
+    border: none;
+    background-image: url("/static/images/target2info.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 25px;
+    height: 25px;
+}
+
+
+
+.targetsp3{
+    background-color: transparent;
+    border: none;
+    background-image: url("/static/images/target1info.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 25px;
+    height: 25px;
+}
+
+
+
+
+
+
+.subnav{
+    cursor: default;
+
+}
+
+
+.icon-bar2 {
+    background-color: red;
+    color: white;
+    writing-mode: vertical-rl;
+    font-size: 18px;
+    padding: 5px;
+  position: fixed;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+#sharescores{
+            background-color: #7c7877;
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .demo2ovr{
+    background-color: #d0d0d0;
+opacity: 1;
+background: linear-gradient(135deg, #e8e8e855 25%, transparent 25%) -12px 0/ 24px 24px, linear-gradient(225deg, #e8e8e8 25%, transparent 25%) -12px 0/ 24px 24px, linear-gradient(315deg, #e8e8e855 25%, transparent 25%) 0px 0/ 24px 24px, linear-gradient(45deg, #e8e8e8 25%, #d0d0d0 25%) 0px 0/ 24px 24px;
+}
+
+.colordesc{
+    font-size: 10px;
+    opacity: 0.3;
+
+}
+
+.extra>a{
+    color: white;
+    text-decoration: none;
+}
+
+.extra>a:hover{
+ color: #ee3e4f;
+}
+
+
+
+
+
+       #gamecontainer{
+        background-size: 40px 40px;
+background-color: black;
+transition: margin-left .5s; /* If you want a transition effect */
+  background-image:
+    linear-gradient(to right, rgba(128, 128, 128, 0.205) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(128, 128, 128, 0.089) 1px, transparent 1px);
+        }
+
+        #canvas {
+            cursor: none;
+            overflow: hidden;
+            border: 5px solid #0593f180;
+           background-color: black;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            margin: auto;
+            -moz-box-shadow: 0px 0px 10px 0px #0593f180;
+			-webkit-box-shadow: 0px 0px 10px 0px #0593f180;
+			box-shadow: 0px 0px 10px 0px#0593f180;
+           display: none;
+
+
+        }
+
+
+        .playbtn{
+         position: absolute;
+         top: 105%;
+         z-index: 2;
+
+
+        }
+
+        #countdown{
+    position: absolute;
+         top: 85%;
+}
+
+        #Screen {
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+
+
+
+        }
+
+       #gametools{
+
+padding: 5px;
+z-index: 2;
+background-color: #8f8f8f00;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(15px);
+display: none;
+position: fixed; /* Set the navbar to fixed position */
+  bottom: 0; /* Position the navbar at the bottom of the page */
+  width: 100%; /* Full width */
+
+
+       }
+
+
+
+
+
+
+       #gametools2{
+
+background-image: linear-gradient(#0593f180,#0593f180);
+margin-top: -45px;
+margin-bottom: 45px;
+width: 350px;
+border-radius: 30px;
+padding-top: 5px;
+padding-bottom: 5px;
+margin: 0px;
+display: block;
+
+
+       }
+
+        #popup {
+            position: absolute;
+            top: 500px;
+            left: 500px;
+            background-color: white;
+            width: 50px;
+            height: 50px;
+        }
+
+        #modalbtn {
+            position: fixed;
+            display: none;
+            background-color: white;
+        }
+
+        #modal {
+            position: fixed;
+        }
+
+
+ .sharescores{
+margin-bottom: -20px;
+font-family: 'Bebas Neue';
+font-size: 24px;
+ }
+
+
+ .modedesc{
+     padding-left: 20%;
+     padding-right: 20%;
+     font-size: 18px;
+     margin-bottom: -40px;
+     margin-top: 40px;
+
+
+ }
+
+
+span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
+.col>.sharesscores{
+    font-family: "Bebas Neue";
+    font-size: 32px;
+}
+
+
+.missioninfo{
+    color: white;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+
+
+#showstats, #hidestats{
+    margin-top: -50px;
+    background-color: transparent;
+    border: none;
+    padding: 5px;
+    border-radius: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-weight: bold;
+}
+
+#hidestats{
+    display: none;
+}
+
+#showstats:hover, #hidestats:hover{
+
+    color: rgba(255, 255, 255, 0.438);
+
+}
+
+#hideme{
+    color: white;
+    font-size: 24px;
+    display: none;
+}
+
+.scores{
+    font-size: 24px;
+    font-weight: bold;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgb(0, 0, 0));
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid black;
+
+}
+
+#custom{
+    background-image: url("/static/images/rankedbanner.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+
+
+.socialbuttonfb{
+    width: 100px;
+    color: white;
+    padding: 10px;
+    background-color: #445482;
+    display: inline-block;
+
+}
+
+.socialbuttonfb:hover{
+
+    background-color: #2a3452;
+    cursor: pointer;
+
+}
+
+
+.socialbuttontw{
+    width: 100px;
+    color: white;
+    padding: 10px;
+    background-color: #1EBEEB;
+    display: inline-block;
+}
+
+.socialbuttontw:hover{
+   cursor: pointer;
+    background-color: #15809e;
+
+}
+
+.display-4{
+    font-family: "Bebas Neue";
+    font-size: 64px;
+}
+
+
+.red{
+    background-color: red;
+    width: 25px;
+    height: 25px;
+    color: red;
+}
+
+
+.black{
+    background-color: rgb(0, 0, 0);
+    width: 25px;
+    height: 25px;
+    color: rgb(0, 0, 0);
+}
+
+.blue{
+    background-color: blue;
+    width: 25px;
+    height: 25px;
+    color: blue;
+}
+
+
+.white{
+    background-color: white;
+    width: 25px;
+    height: 25px;
+    color: white;
+}
+
+
+.grey{
+    background-color: #848484;
+    width: 25px;
+    height: 25px;
+    color: #848484;
+}
+
+
+.rainbow{
+
+    width: 25px;
+    height: 25px;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left, orange , yellow, green, cyan, blue, violet); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet); /* Standard syntax (must be last) */
+
+
+
+
+
+
+}
+
+
+
+.fa-eye-dropper{
+    color: rgb(0, 0, 0);
+}
+
+
+
+/* The sidebar menu */
+.sidebar {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0;
+  left: 0;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
+
+/* The sidebar links */
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* The button used to open the sidebar */
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  position: sticky;
+  top: 50%;
+  z-index: 2;
+  writing-mode: vertical-rl;
+}
+
+button>.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  position: sticky;
+  top: 50%;
+  z-index: 2;
+  writing-mode: vertical-rl;
+}
+
+
+ul li a:hover{
+    text-decoration: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s; /* If you want a transition effect */
+  padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+
+
+
+
+
+
+
+
+
+
+
+.customization{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

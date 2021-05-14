@@ -1,0 +1,261 @@
+{% extends 'baseforum.html' %}
+{% block title %}
+<title>{{ post.title }}</title>
+<style>
+
+    .hide{
+    display: none;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+
+<h1>{{ post.title }}</h1>
+<small> By: {{ post.author.Username }} </small>
+<p>{{ post.body }}</p>
+
+<div class="staff">
+    <form action="." method="post">
+<button id="delete" value="{{post.id}}"><a href="{% url 'staff:deleteposts' post.pk %}">Delete Post</a></button>
+        <br>
+            {% if post.is_closed  == True %}
+                <button id="open" value="{{post.id}}"><a href="{% url 'staff:openposts' post.pk %}">Open Post</a></button>
+            {% else %}
+                <button id="close" value="{{post.id}}"><a href="{% url 'staff:closeposts' post.pk %}">Close Post</a></button>
+           {% endif %}
+
+
+
+    </form>
+</div>
+<a href="{% url 'forums:forum' %}"  class="btn btn-secondary" >Back</a>
+<br>
+<br><br>
+<form action="{% url 'staff:like_post' post.pk %}" method="post">
+{% csrf_token %}
+
+    {% if liked %}
+    <button class="btn btn-primary btn-sm" type="submit" name="Post_like" value="{{ post.id }}">UnLike</button>
+    {% else %}
+    <button class="btn btn-primary btn-sm" type="submit" name="Post_like" value="{{ post.id }}">Like</button>
+    {% endif %}
+ Likes : {{ total_likes }}
+
+    <br>
+    <br>
+
+
+</form>
+
+
+  <div class="comment">
+
+
+        <button  class="btn btn-primary btn-sm" type="submit"  value="{{ post.id }}" onclick="showComment()">Comment</button>
+
+    </div>
+
+<div class="comment-area hide" id="comment-area">
+
+            <textarea name="comment" id="textbody" placeholder="comment here ... "></textarea>
+<button  class="btn btn-primary btn-sm" id="com_submit"  name="Post_comment" type="submit"  value="{{ post.id }}" onclick="showComment()">Submit</button>
+
+
+        </div>
+
+
+<hr>
+    <div class="comment-content">
+{% if not post.Post.all %}
+    No comments yet
+
+{% else %}
+
+
+    {% for comments in com %}
+        {{comments.user }} <br>
+        {{ comments.body }} -   {{ comments.date_added }}
+<br><br>
+     <form method="post" action="{% url 'forums:Comment_post' comments.id %}"> {% csrf_token %}
+        <div class="replysection">
+            <textarea name="reply" id="reply" placeholder="reply here ... "></textarea>
+            <input type="hidden" id="post_id"  class="post_id" name = "post_id"  value= {{ post.id }} >
+            <input type="hidden" id="hiddeninput"  class="comment_id" name = "comment_id"  value= {{ comments.id }} >
+
+            <button  id="replysubmit" name="replysubmit" type="submit" > Submit</button>
+            <br>
+        </div>
+     </form>
+
+            <b>Replies:</b><br>
+            {% for reply in comments.replies.all %}
+                {{ reply.user|capfirst }} - {{reply.body}} - {{reply.date_added|timesince }} ago
+            <br>
+            {% endfor %}
+            <hr>
+        </div>
+
+
+
+<br>
+        <br>
+    {% endfor %}
+
+{% endif %}
+
+
+
+    </div>
+<script>
+
+    function showComment(){
+    var commentArea = document.getElementById("comment-area");
+    commentArea.classList.remove("hide");
+}
+</script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script>
+
+            $(document).on('click', '#com_submit' , function(event){
+                event.preventDefault();
+                console.log("from jquery section")
+                var pk = $(this).attr('value');
+                var body = $("#textbody").val();
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "forums:Comment_post" post.pk %}',
+                    data: {
+                    'post_id':pk,
+                    'comment':body,
+
+                    action: 'Post_comment',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+                    dataType: 'json',
+                    success: function(response){
+
+                         $("#textbody").val('');
+                        console.log("comment worked");
+                       var _html ='<div class="replysection">{{ request.session.Username }} <br>   '+ body +'  - {% now " F j Y, g:i a" %}  </div>';
+                       $(".comment-content").append(_html);
+
+                    },
+                    error: function(rs, e){
+
+                        console.log("not");
+                    },
+            });
+         });
+
+
+
+
+            $(document).on('click', '#close' , function(event){
+                event.preventDefault();
+
+                var pk = $(this).attr('value');
+                var btn =$("#open");
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "staff:closeposts" post.pk %}',
+                    data: {
+                    'post_id':pk,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+                    dataType: 'json',
+                    success: function(response){
+                var _html ='<button id="open" value="{{post.id}}"><a href="{% url 'staff:openposts' post.pk %}">Open Post</a></button>';
+
+                $("#close").remove();
+               $(".staff").append(_html);
+                        console.log("close worked");
+
+                    },
+                    error: function(rs, e){
+
+                        console.log("not");
+                    },
+            });
+         });
+
+
+
+
+
+            $(document).on('click', '#delete' , function(event){
+                event.preventDefault();
+
+                var pk = $(this).attr('value');
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "staff:deleteposts" post.pk %}',
+                    data: {
+                    'post_id':pk,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+                    dataType: 'json',
+                    success: function(response){
+
+
+                        console.log("close worked");
+
+                    },
+                    error: function(rs, e){
+
+                        console.log("not");
+                    },
+            });
+         });
+
+
+
+
+
+            $(document).on('click', '#open' , function(event){
+                event.preventDefault();
+
+                var pk = $(this).attr('value');
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "staff:openposts" post.pk %}',
+                    data: {
+                    'post_id':pk,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+                    dataType: 'json',
+                    success: function(response){
+
+   var _html ='<button id="close" value="{{post.id}}"><a href="{% url 'staff:closeposts' post.pk %}">Close Post</a></button>';
+
+                $("#open").remove();
+               $(".staff").append(_html);
+                        console.log("close worked");
+
+                    },
+                    error: function(rs, e){
+
+                        console.log("not");
+                    },
+            });
+         });
+
+
+
+
+</script>
+{% endblock %}

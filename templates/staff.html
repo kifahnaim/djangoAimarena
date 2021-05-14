@@ -1,0 +1,490 @@
+
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>AIMARENA | STAFF</title><!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+{% for instance in permission %}
+
+
+        {% if instance.textwelcome == True %}
+        <h1>Hello {{instance.RoleName}}</h1>
+        {% endif %}
+
+
+<br><br>
+
+ {% if instance.ban == True or instance.kick == True %}
+<input type="text" id="search" name="search" placeholder="Search" >
+<div class="tableusers">
+<table class="table">
+  <thead>
+
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Username</th>
+        <th scope="col">Role</th>
+            {% if instance.kick == True %}
+      <th scope="col">Kick from forum</th>
+         {% endif %}
+        {% if instance.ban == True %}
+      <th scope="col">Ban from game</th>
+        {% endif %}
+              {% if instance.can_promote == True %}
+      <th scope="col">Promote</th>
+        {% endif %}
+    </tr>
+  </thead>
+
+  <tbody id="body">
+
+
+
+    {% for obj in listusers %}
+
+
+            <tr>
+             <form method="post" action=".">{% csrf_token %}
+          <input id="id" type="hidden" value= {{ obj.id }}>
+              <th scope="row">{{ obj.id }}</th>
+              <td> <a href=""> {{obj.Username}} </a></td>
+                 <td>{{obj.Role}}</td>
+
+          {% if instance.kick == True %}
+            {% for image in obj.user_id_actions.all %}
+                 {% if image.user_kick %}
+                       <td><button value="{{obj.id}}" type="button" id="unkickbtn" class="btn btn-outline-danger"><a id="unkickurl" href="{% url 'staff:unkickuser' obj.id %}" >unKick</a></button></td>
+                 {% else %}
+                    <td><button value="{{obj.id}}" type="button" id="kickbtn" class="btn btn-outline-danger"><a id="kickurl" href="{% url 'staff:kickuser' obj.id %}" >Kick</a></button></td>
+                 {% endif %}
+                 {% empty %}
+                  <td><button value="{{obj.id}}" type="button" id="kickbtn" class="btn btn-outline-danger"><a id="kickurl" href="{% url 'staff:kickuser' obj.id %}" >Kick</a></button></td>
+
+            {% endfor %}
+                  {% endif %}
+               {% if instance.ban == True %}
+                {% for image in obj.user_id_actions.all %}
+                        {% if image.user_ban %}
+          <button value="{{ obj.id }}" id="unban" ><a  class="unbanurl" href="" style="color:red; cursor:pointer;">Remove Ban </a>
+         </button>
+                        {% else %}
+
+                 <td><button type="button" class="btn btn-outline-danger"><a class="banurl" href="{% url 'staff:banuser' obj.id %}" >Ban </a></button></td>
+
+               {% endif %}
+                 {% empty %}
+                          <td><button type="button" class="btn btn-outline-danger"><a class="banurl" href="{% url 'staff:banuser' obj.id %}" >Ban </a></button></td>
+                 {% endfor %}
+                   {% endif %}
+
+                 {% if instance.can_promote == True %}
+                 <td><button type="button" class="btn btn-outline-danger"><a href="">promote </a> </button></td>
+
+
+                {% endif %}
+
+
+             </form>
+            </tr>
+
+
+
+        {% endfor %}
+
+
+  </tbody>
+</table>
+    </div>
+ {% endif %}
+{% if instance.manage_posts == True %}
+<h1>manage posts</h1>
+ <input type="text" id="postsearch" name="search" placeholder="Search" >
+<div class="tableposts">
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Post title</th>
+      <th scope="col">Post description</th>
+      <th scope="col">Username</th>
+      <th scope="col">Close Post</th>
+      <th scope="col">Delete Post</th>
+
+    </tr>
+  </thead>
+  <tbody>
+{% for manage in manageposts %}
+
+    <tr>
+
+      <td>{{manage.id}}</td>
+      <td><a href="{% url 'forums:Post_detail' manage.id %}" >{{manage.title}} </a></td>
+      <td>{{manage.body}}</td>
+      <td>{{manage.author}}</td>
+        <div class="staff">
+        {% if manage.is_closed  == True %}
+             <td id="tdopen">   <button id="open" value="{{manage.id}}"> <a id="openurl" href="{% url 'staff:openposts' manage.id %}">Open Post</a></button></td>
+            {% else %}
+             <td id="tdclose">   <button id="close" value="{{manage.id}}"> <a  id="closeurl"  href="{% url 'staff:closeposts' manage.id %}">Close Post</a></button></td>
+        {% endif %}
+        </div>
+
+            <td><button id="delete" value="{{manage.id}}"><a id="deleteurl" href="{% url 'staff:deleteposts' manage.id %}">Delete Post</a></button></td>
+
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+</div>
+
+  <br>
+
+
+
+{% endif %}
+
+{% if instance.email == True %}
+
+<h1>Email</h1>
+<form method="post" action="{% url 'staff:customer_service' %}"> {% csrf_token %}
+    Message Name<input type="text" name="message_name"><br>
+    Message Email<input type="text" name="message_email"><br>
+    Message <input type="text" name="message">
+    <input type="submit">
+
+</form>
+
+{% endif %}
+
+
+
+
+
+
+
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+var searchusers = document.getElementById('search')
+
+   searchusers.addEventListener('keyup',(e)=> {
+    const searchValue= e.target.value;
+  if(searchValue.length>0){
+filterusers();
+
+    }
+     else if(searchValue.length == 0){
+    _html ='{% for instance in permission %}<table class="table"><thead><tr><th scope="col">ID</th><th scope="col">Username</th><th scope="col">Role</th>{% if instance.kick == True %}<th scope="col">Kick from forum</th>{% endif %}{% if instance.ban == True %}<th scope="col">Ban from game</th>{% endif %}</tr></thead><tbody>{% for obj in listusers %}<tr><form method="post" action=".">{% csrf_token %}<input id="id" type="hidden" value= {{ obj.id }}><th scope="row">{{ obj.id }}</th><td> <a href=""> {{obj.Username}} </a></td><td>{{obj.Role}}</td>{% if instance.kick == True %}{% for image in obj.user_id_actions.all %}{% if image.user_kick %}<td><button value="{{obj.id}}" type="button" id="unkickbtn" class="btn btn-outline-danger"><a id="unkickurl" href="{% url 'staff:unkickuser' obj.id %}" >unKick</a></button></td>{% else %}<td><button value="{{obj.id}}" type="button" id="kickbtn" class="btn btn-outline-danger"><a id="kickurl" href="{% url 'staff:kickuser' obj.id %}" >Kick</a></button></td> {% endif %} {% empty %}<td><button value="{{obj.id}}" type="button" id="kickbtn" class="btn btn-outline-danger"><a id="kickurl" href="{% url 'staff:kickuser' obj.id %}" >Kick</a></button></td> {% endfor %} {% endif %} {% if instance.ban == True %}{% for image in obj.user_id_actions.all %}{% if image.user_ban %}<button value="{{ obj.id }}" id="unban" ><a  class="unbanurl" href="" style="color:red; cursor:pointer;">Remove Ban </a></button>{% else %}<td><button type="button" class="btn btn-outline-danger"><a class="banurl" href="{% url 'staff:banuser' obj.id %}" >Ban </a></button></td>{% endif %} {% empty %}<td><button type="button" class="btn btn-outline-danger"><a class="banurl" href="{% url 'staff:banuser' obj.id %}" >Ban </a></button></td>{% endfor %}</form></tr>{% endif %}{% endfor %}</tbody></table>  {% endfor %}';
+                 $(".tableusers").empty();
+                    $(".tableusers").html(_html);
+     }
+
+  });
+
+
+  var searchposts = document.getElementById('postsearch');
+
+   searchposts.addEventListener('keyup',(e)=> {
+    const searchvaluesposts= e.target.value;
+  if(searchvaluesposts.length>0){
+
+    filterposts();
+
+    }
+     else if(searchvaluesposts.length == 0){
+_html='<table class="table"><thead><tr><th scope="col">ID</th><th scope="col">Post title</th> <th scope="col">Post description</th><th scope="col">Username</th><th scope="col">Close Post</th><th scope="col">Delete Post</th></tr></thead><tbody>{% for manage in manageposts %}<tr><td>{{manage.id}}</td><td><a href="{% url 'forums:Post_detail' manage.id %}" >{{manage.title}} </a></td><td>{{manage.body}}</td><td>{{manage.author}}</td><div class="staff">{% if manage.is_closed  == True %}<td id="tdopen">   <button id="open" value="{{manage.id}}"> <a id="openurl" href="{% url 'staff:openposts' manage.id %}">Open Post</a></button></td>{% else %}<td id="tdclose">   <button id="close" value="{{manage.id}}"> <a  id="closeurl"  href="{% url 'staff:closeposts' manage.id %}">Close Post</a></button></td>{% endif %}</div> <td><button id="delete" value="{{manage.id}}"><a id="deleteurl" href="{% url 'staff:deleteposts' manage.id %}">Delete Post</a></button></td></tr>{% endfor %}</tbody></table>';
+      $(".tableposts").empty();
+                    $(".tableposts").html(_html);
+
+     }
+
+  });
+
+
+  function filterposts(){
+
+          $.ajax({
+
+                type :"POST",
+                url:" {% url 'staff:searchposts' %}",
+                data : {
+                   "search_text":$("#postsearch").val(),
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success :function(response){
+                    var filtereddata =response;
+
+                if(response.filtereddata != "No Posts found!"){
+
+
+                console.log(filtereddata);
+                     $(".tableposts").empty();
+                    $(".tableposts").html(filtereddata);
+
+                }else{
+                _nouser='<div class="topic-container"><h1>No Posts found!</h1> </div>';
+             $(".tableposts").html(_nouser);
+
+                }
+
+
+
+
+                },
+                error: function(rs, e){
+                   console.log("oops error!");
+                  },
+
+           });
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+ function filterusers() {
+
+
+$.ajax( {
+                type :"POST",
+                url:"{% url 'staff:searchusers' %}",
+                data : {
+
+                   "search_text":$("#search").val(),
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success :function(response){
+
+                filtereddata= response;
+                 console.log(filtereddata);
+                if(response.filtereddata != "No Users found!"){
+                 $(".tableusers").empty();
+                    $(".tableusers").html(filtereddata);
+
+
+
+                }else{
+            _nouser='<div class="topic-container"><h1>No Users found!</h1> </div>';
+             $(".tableusers").html(_nouser);
+
+                }
+
+
+
+
+                },
+                error: function(rs, e){
+                   console.log("oops error!");
+                  },
+
+                });
+
+
+ }
+
+
+
+
+
+
+                $(document).on('click', '#kickbtn' , function(event){
+                event.preventDefault();
+
+        var kickurl= $("#kickurl").attr('href');
+         var pk = $(this).attr('value');
+        $.ajax({
+                        type: 'POST',
+                        url: kickurl,
+                        data: {
+                        'user_id' : pk,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        dataType: 'json',
+                        success: function(response){
+                            console.log("worked");
+                            console.log(pk);
+
+                        },
+                        error: function(rs, e){
+
+                            console.log("error");
+                        },
+                });
+            });
+
+
+
+
+                $(document).on('click', '#unkickbtn' , function(event){
+                event.preventDefault();
+
+        var unkickurl= $("#unkickurl").attr('href');
+         var pk = $(this).attr('value');
+        $.ajax({
+                        type: 'POST',
+                        url: unkickurl,
+                        data: {
+                        'user_id' : pk,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        dataType: 'json',
+                        success: function(response){
+                            console.log("worked");
+                            console.log(pk);
+
+                        },
+                        error: function(rs, e){
+
+                            console.log("error");
+                        },
+                });
+            });
+
+
+
+            $(document).on('click', '#close' , function(event){
+                event.preventDefault();
+
+                var pk = $(this).attr('value');
+                var btn =$("#open");
+
+                var closeurl = $("#closeurl").attr("href");
+                $.ajax({
+                    type: 'POST',
+                    url: closeurl,
+                    data: {
+                    'post_id':pk,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+                    dataType: 'json',
+                    success: function(response){
+                var _html ='<button id="open" value="{{post.id}}"><a href="">Open Post</a></button>';
+
+                $("#close").remove();
+               $(".staff").append($("#open"));
+                        console.log("close worked");
+
+                    },
+                    error: function(rs, e){
+
+                        console.log("not");
+                    },
+            });
+         });
+
+
+
+
+
+            $(document).on('click', '#delete' , function(event){
+                event.preventDefault();
+
+                var pk = $(this).attr('value');
+                var deleteurl= $("#deleteurl").attr('href');
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: deleteurl,
+                    data: {
+                    'post_id':pk,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+                    dataType: 'json',
+                    success: function(response){
+
+                        console.log("open worked");
+
+                    },
+                    error: function(rs, e){
+
+                        console.log("not");
+                    },
+            });
+         });
+
+
+
+
+
+            $(document).on('click', '#open' , function(event){
+                event.preventDefault();
+
+                var pk = $(this).attr('value');
+                var openurl = $("#openurl").attr("href");
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: openurl,
+                    data: {
+                    'post_id':pk,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+                    dataType: 'json',
+                    success: function(response){
+
+
+
+                $("#open").remove();
+                        console.log("close worked");
+
+                    },
+                    error: function(rs, e){
+
+                        console.log("not");
+                    },
+            });
+         });
+
+
+
+
+
+
+
+</script>
+</html>

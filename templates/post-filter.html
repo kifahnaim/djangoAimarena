@@ -1,0 +1,107 @@
+{% load static %}
+
+        {% for instance in permission %}
+{% if instance.manage_posts == True %}
+
+    <div class="tableposts">
+          <table class="table table-striped projects">
+              <thead>
+                  <tr>
+                      <th style="width: 1%">
+                          #
+                      </th>
+                      <th style="width: 20%">
+                          Post title
+                      </th>
+                      <th style="width: 25%">
+                         Post description
+                      </th>
+                          <th style="width: 20%">
+                         Post Image
+                      </th>
+
+                                  <th style="width: 10%">
+                         Username
+                      </th>
+                      <th style="width:10%">Status</th>
+
+    <th style="width: 13%">
+                      </th>
+    <th style="width: 17%">
+                      </th>
+
+                  </tr>
+
+              </thead>
+           <tbody>
+              {% for obj in manageposts %}
+                  <tr>
+                      <td>
+                           {{ obj.id }}
+                      </td>
+                      <td>
+                          <a>
+                             {{ obj.title }}
+                          </a>
+                          <br/>
+                          <small>
+                              {{ obj.timestamp|timesince }}
+                          </small>
+                      </td>
+
+                      <td>
+                           {{ obj.body|safe }}
+                      </td>
+                      <td>
+                          <ul class="list-inline">
+                                     {% if obj.thumbnail %}
+                                  <img style="background-color:#000;" alt="postimage" class="table-avatar" src="{{ obj.thumbnail.url }}">
+                                  {% endif %}
+                          </ul>
+                      </td>
+                    <td>
+                          <a>
+                               {{ obj.author.Username }}
+                          </a>
+
+                      </td>
+                      <td>
+{% if obj.deleted %}
+
+                          <img width="20px" src="{% static 'images/remove.png' %}" alt="deleted">
+
+
+                          {% else %}
+                       <img  width="20px" src="https://img.icons8.com/color/48/26e07f/ok.png"/>
+                          {% endif %}
+                      </td>
+{% if obj.deleted %}
+<td></td> <td id="tdundo" >   <button id="undo" onclick="undopost({{obj.id}})" value="{{obj.id}}"> <a id="undourl" href="{% url 'staff:undoposts' obj.id %}">Undo Post</a></button></td>
+                      {% else %}
+            {% if obj.is_closed  == True %}
+             <td id="tdopen" >   <button id="open" onclick="openpost('{{obj.id}}')" value="{{obj.id}}"> <a id="openurl" href="{% url 'staff:openposts' obj.id %}">Open Post</a></button></td>
+            {% else %}
+             <td id="tdclose" >   <button id="close" onclick="closepost('{{obj.id}}')" value="{{obj.id}}"> <a  id="closeurl"  href="{% url 'staff:closeposts' obj.id %}">Close Post</a></button></td>
+        {% endif %}
+
+            <td><button id="delete" onclick='deleteconfirm("{{obj.id}}", "{{obj.title}}")' value="{{manage.id}}">Delete Post</button></td>
+            <a style="display:none;" id="deleteurl" href="{% url 'staff:deleteposts' obj.id %}"></a>
+{% endif %}
+                  </tr>
+
+{% endfor %}
+              </tbody>
+          </table>
+
+  <br>
+
+
+
+{% endif %}
+
+
+        {% endfor %}
+
+
+
+</div>

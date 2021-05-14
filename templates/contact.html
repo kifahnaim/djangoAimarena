@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+{% load static %}
+{% load staff_tags %}
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Contact us | AIMARENA</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+    <script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/gamecss/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/qanto.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/bauhaus93.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/icofont.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/plugins.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/helper.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/style.css' %}">
+    <script src="{% static 'js/gamejs/vendor/modernizr-2.8.3.min.js' %}"></script>
+</head>
+
+<body>
+
+    <div id="main-wrapper">
+        <header class="header header-static bg-black header-sticky">
+            <div class="default-header menu-right">
+                <div class="container container-1520">
+                    <div class="row">
+                        <div class="col-12 col-md-3 col-lg-3 order-md-1 order-lg-1 mt-20 mb-20">
+                            <div class="logo">
+                                <a href="{% url 'game' %}"><img src="{% static 'images/logo.png' %}" width="50%"
+                                        alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12 order-md-3 order-lg-2 d-flex justify-content-center">
+                            <nav class="main-menu menu-style-2">
+                                <ul>
+                                    <li><a href="{% url 'game' %}">Home</a>
+
+                                    </li>
+                                    <li><a href="{% url 'forums:forumcategroies' %}">Forums</a>
+                                    </li>
+                                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="col-12 col-md-9 order-md-2 order-lg-3 col-lg-3">
+                            <div class="header-right-wrap">
+                                <ul>
+                                    {% if request.session.Username %}
+
+
+
+
+                                    <div class="account-info">
+                                        <div class="dropdown" style="float:right;">
+                                            <button class="fas fa-sort-down"
+                                                style="color: #FF0042; background-color: transparent; border: none;"></button>
+                                            <div class="dropdown-content">
+                                                <a href="{% url 'forums:my_profile' %}">My profile</a>
+                                                <a href="{% url 'signout' %}">Sign out</a>
+
+                                            </div>
+                                        </div>
+
+                                        </i><span class="gameuser"><img style="border-radius: 50%;" width="20px"
+                                                height="20px" src="{{ Userdetails.url }}">
+                                            {{ request.session.Username }}</span>
+                                        <h5 class="gameemail text-secondary">{{ request.session.Useremail }}</h5>
+
+                                        {% else %}
+                                        <li><a href="{% url 'signin' %}">LOGIN</a></li>
+                                        <li><a href="{% url 'signup' %}">REGISTER</a></li>
+                                        {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-flex d-lg-none">
+                            <div class="mobile-menu">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="contact-section section pt-30 pt-lg-10 pt-md-10 pt-sm-10 pt-xs-20 pb-xs-45 mt-30 mb-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="contact-address-wrap">
+                            <h2 class="text-light">for more information <br> you can contact with us</h2>
+
+                        </div>
+                    </div>
+                </div>
+                {% if messages %}
+                <div class="alert alert-success" role="alert">
+                    {% for i in messages %}
+                    {{ i }}
+
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="row">
+
+
+                    <div class="col-lg-8 col-md-12">
+                        <div class="contact-form mt-90 mt-lg-70 mt-md-60 mt-sm-50 mt-xs-20">
+                            <h4 class="text-light">Leave a Message</h4>
+
+                            <form method="post" action="{% url 'contactsendmsg' %}" class="comment-form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6 col-12 mb-30">
+                                        <input type="text" id="name" name="name" placeholder="Name" required>
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-30">
+                                        <input type="email" id="email" name="email" placeholder="Email" required>
+                                    </div>
+
+                                    <div class="col-12 mb-30">
+                                        <textarea id="message" name="message" placeholder="Message" required></textarea>
+                                    </div>
+
+                                    <div class="col-12">
+
+                                        <button type="submit" style="background-color: #f62541;"> <a><i
+                                                    class="far fa-envelope"></i>&nbsp; <span
+                                                    style="font-family: 'bebas neue'; font-weight: lighter;">Submit</span></a>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <footer class="footer-section style-2 section" style="background-color: #ff2828">
+        <div class="footer-top section pt-80 pb-80">
+            <div class="container container-1520">
+                <div class="row justify-content-lg-between">
+                    <div class="col-xl-3 col-lg-2 col-md-3">
+                        <div class="footer-widget">
+                            <div class="footer-logo">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6 col-md-9">
+                        <div class="footer-widget">
+                            <div class="footer-nav">
+                                <nav class="text-center">
+
+                                    <a href="https://www.facebook.com/aim.arena.3" class="fa fa-facebook"></a>
+                                    <a href="https://twitter.com/AIMARENA1" class="fa fa-twitter"></a>
+                                    <a href="https://www.instagram.com/aimarenaoffical/" class="fa fa-instagram"></a>
+                                    <a href="https://www.youtube.com/channel/UCpzBnQcZkDuPoZqUudaFX8A"
+                                        class="fa fa-youtube"></a>
+
+                                </nav><br>
+                                <div class="text-center text-light extra">
+                                    <a href="{% url 'privacy' %}">Privacy Policy</a> &nbsp;|&nbsp; <a
+                                        href="{% url 'terms' %}">Terms of Use </a> &nbsp;|&nbsp; <a
+                                        href="{% url 'about' %}">About us </a>
+                                </div>
+                                <div class="copyright text-center text-muted">
+                                    © 2021 AIMARENA. All Rights Reserved
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-4 col-md-12">
+                        <div class="footer-widget">
+                            <div class="footer-social">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/gamejs/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'js/gamejs/popper.min.js' %}"></script>
+    <script src="{% static 'js/gamejs/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/gamejs/plugins.js' %}"></script>
+    <script src="{% static 'js/gamejs/main.js' %}"></script>
+
+</html>

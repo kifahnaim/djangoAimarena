@@ -1,0 +1,80 @@
+<html>
+{% load staff_tags %}
+
+    <!--Topic Section-->
+    <div class="topic-container">
+        <!--Original thread-->
+        <div class="head">
+            <div class="authors">Author</div>
+            <div class="content-title">Posts</div>
+
+
+
+
+        </div>
+        {% for instance in item %}
+        <div class="post">
+        <div class="body">
+
+
+            <div class="authors">
+
+
+                <div class="row">
+                  
+
+
+                        <img class="account-info-sub2" style="border-radius:50%" src="/media/{{ instance.user_thumbnail }}" alt="error">
+
+                        <div class="username"><a style="color:white;cursor:pointer; margin-left: -5px;" onclick="openmodal( {{ instance.uid }})">{{ instance.Username }}</a>
+
+
+                                             </div>
+
+                                             <div class="account-info-sub2" style="margin-left: -5px;">{{ instance.Role }} </div>
+
+                    
+
+
+                  </div>
+
+<br>
+
+  {% countpostsforusers instance.uid as add_users_flag %}
+  {% countpointsforusers instance.uid as points %}
+
+
+                <div class="account-info-sub2">Posts: <span class="pointsposts">{{ add_users_flag }}</span></div>
+                {% if points %}
+                <div class="account-info-sub2">Points: <span class="pointsposts">{{ points }}</span> </div>
+                {% endif %}
+            </div>
+            <div class="content">
+<a class="content-link" href="{% url 'forums:Post_detail' instance.id %}">
+               {{ instance.title }}
+</a>
+                <br>
+
+
+
+                <p class="content-body"> {{ instance.body|safe }}</p><br>
+               <hr class="hrstyle">
+
+               <P class="post-timestamp">posted on {{ instance.timestamp }}</P>
+                <br><br>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+        {% endfor %}
+
+
+
+    </div>
+
+</html>

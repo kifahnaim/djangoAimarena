@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ userreg.Username }}</title>
+</head>
+<body>
+{{ userreg.Username }} <br>
+{{ userreg.Role }}<br>
+{{ userreg.Firstname }}<br>
+{{ userreg.Lastname }}<br>
+{{ userreg.datecreated }}<br>
+{{ userreg.Useremail }}<br>
+
+
+               {% for i in usermanage %}
+
+    <div class="buttonswap">
+                                 {% if i.user_ban == True and i.user_id_id == userreg.id %}
+
+                 <button value="{{ userreg.id }}" id="unban" ><a  class="unbanurl" href="{% url 'staff:unbanuser' userreg.id %}" style="color:red; cursor:pointer;">Remove Ban </a></button>
+                                {% endif %}
+                {% empty %}
+
+                  <button value="{{ userreg.id }}" id="com_submit"><a class="banurl" href="{% url 'staff:banuser' userreg.id %}" style="color:blue; cursor:pointer;">Ban </a> </button>
+
+    </div>
+
+                {% endfor %}<br>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+
+
+                    $(document).on('click', '#unban' , function(event){
+                event.preventDefault();
+
+            var unbanurl= $(".unbanurl").attr('href');
+             var pk =$(this).attr('value');
+            $.ajax({
+                        type: 'POST',
+                        url: unbanurl,
+                        data: {
+                        'user_id' : pk,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                         },
+                        dataType: 'json',
+                        success: function(response){
+                            console.log("worked");
+                            console.log(pk);
+   var _html ='<button value="{{ userreg.id }}" id="com_submit"><a class="banurl" href="{% url 'staff:banuser' userreg.id %}" style="color:blue; cursor:pointer;">Ban </a> </button>';
+
+                $("#unban").remove();
+               $(".buttonswap").append(_html);
+
+                        },
+                        error: function(rs, e){
+
+                            console.log("error");
+                        },
+                });
+            });
+
+
+
+    $(document).on('click', '#com_submit' , function(event){
+                event.preventDefault();
+
+        var banurl= $(".banurl").attr('href');
+         var pk =$(this).attr('value');
+         var $this= $("#com_submit");
+        $.ajax({
+                        type: 'POST',
+                        url: banurl,
+                        data: {
+                        'user_id' : pk,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                         },
+                        dataType: 'json',
+                        success: function(response){
+                            console.log("worked");
+
+   var _html ='<button value="{{ userreg.id }}" id="unban" ><a  class="unbanurl" href="{% url "staff:unbanuser" userreg.id %}" style="color:red; cursor:pointer;">Remove Ban </a></button>';
+
+                $("#com_submit").remove();
+               $(".buttonswap").append(_html);
+
+
+                        },
+                        error: function(rs, e){
+
+                            console.log("error");
+                        },
+                });
+            });
+
+
+
+</script>
+</body>
+</html>

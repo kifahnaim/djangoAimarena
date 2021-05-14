@@ -1,0 +1,152 @@
+
+         <!--Navigation-->
+
+
+<h1><a>You have a total of {{ count }} posts published </a></h1>
+        <!--Display posts table-->
+<br><br>
+        <div class="posts-table">
+            <div class="table-head">
+
+                <div class="subjects">&nbsp;&nbsp;Subjects</div>
+                <div class="replies">&nbsp;&nbsp; Comments/Views</div>
+                <div class="last-reply">&nbsp;&nbsp; Actions</div>
+            </div>
+            {% for item in items %}
+            <div class="table-row">
+
+                <div class="subjects">
+                    <a href="{% url 'forums:Post_detail' item.id %}" class="goback">&nbsp;&nbsp;{{ item.title  }}</a>
+                    <br>
+                    &nbsp;&nbsp;{{item.timestamp|timesince }} ago
+
+
+                </div>
+                <div class="replies">
+
+
+
+                  <p class="values">  <i class="fas fa-comments fa-1x"></i>   &nbsp;&nbsp;&nbsp; {{ item.Post.count }} &nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-eye fa-1x"></i></i>&nbsp;&nbsp;&nbsp;125</p>
+
+
+
+
+
+
+
+
+                </div>
+
+                <div class="last-reply">
+<button class='link-delete goback' onclick="editpost('{{ item.id }}','{{ item.title }}', '{{ item.body }}' )"  id="opener"><b><a style="font-family: 'Bebas Neue';">Edit</a></b></button>
+                 &nbsp; <a style="display:none;" id="editurl" href="{% url 'forums:editpost' item.id %}" ></a>
+
+                    <b>  <a href=" {% url 'forums:deletepost' item.id %} " id="link-delete" class='link-deletepost' > Delete </a> </b>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!--ends here-->
+        </div>
+        <!--Pagination starts-->
+              <div class="pagination">
+                pages:
+
+                {% if page.has_previous %}
+        <a href="?page={{page.previous_page_number}}">Previous Page</a>
+         {% endif %}
+        {% if page.has_next %}
+        <a href="?page={{page.next_page_number}}">Next Page</a>
+         {% endif %}
+                Number of pages:    {{ numberofpage }}
+
+                </div>
+        <!--pagination ends-->
+<script>
+    $('.link-deletepost').on("click", function(e){
+        e.preventDefault();
+        var token = '{{csrf_token}}';
+
+        var $this = $(this);
+        if(confirm("Are you sure")){
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url:$this.attr("href"),
+            type: "POST",
+            dataType: "json",
+            success: function(resp){
+                if(resp.message == 'success'){
+                            console.log("success");
+                    $this.parents('.table-row').remove();
+
+                }
+                else{
+                alert(resp.message);
+                }
+
+            },
+            error: function(resp){
+            console.log("Something went wrong");
+            }
+        });
+
+        }
+        return false;
+
+    });
+
+  function editpost(id, val , body){
+    $("#title").val(val);
+    $("#body").val(body);
+  $( "#dialog" ).dialog( "open" );
+$('#submiteditpost').val(id);
+  }
+
+
+            $('#submiteditpost').on("click", function(e){
+        var file = document.getElementById('image');
+        e.preventDefault();
+               title = $("#title").val();
+        body = $("#body").val();
+        var formData = new FormData();
+        formData.append("image",file.files[0]);
+        formData.append("title", title);
+        formData.append("body", body);
+        console.log(formData);
+
+        var token = '{{csrf_token}}';
+        e.preventDefault();
+        var $this = $(this).val();
+        console.log($("#editurl").attr("href"));
+        $.ajax({
+
+                url:'../../forum/my_posts/edit/'+$this+'/',
+                type: "POST",
+                data : formData,
+                processData: false,
+                contentType: false,
+                dataType: "html",
+  success: function(resp){
+
+ $( "#dialog" ).dialog( "close" );
+ $(".container").html(resp);
+
+      var x = document.getElementById("snackbar");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+      $("#snackbar").html("Post edited successfully !");
+
+            },
+            error: function(resp){
+            console.log("Something went wrong");
+            }
+        });
+
+    });
+
+
+
+
+
+
+</script>

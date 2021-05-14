@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 	{% load static %}
-<head>
-	<title>Login V4</title>
+
 	<meta charset="UTF-8">
+	<link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="google-signin-client_id" content="1037794151808-qloqi0ugefotppl5qp63iafujvve8qgn.apps.googleusercontent.com">
 <!--===============================================================================================-->	
@@ -27,7 +27,11 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'snackbarlibrary/snackbar.min.css' %}" />
+	<script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
+
 </head>
 <body>
 	
@@ -52,5 +56,6 @@
 <!--===============================================================================================-->
 	<script src="{% static 'js/main.js' %}"></script>
 
+	<script src="{% static 'snackbarlibrary/snackbar.min.js' %}"></script>
 </body>
 </html>

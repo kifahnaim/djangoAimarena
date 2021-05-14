@@ -1,147 +1,480 @@
-{% extends 'basenew.html' %}
+<!DOCTYPE html>
 {% load static %}
+{% load staff_tags %}
+<html class="no-js" lang="zxx">
 
-{% block content %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Practice Your AIM | AIMARENA</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+    <script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/gamecss/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/qanto.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/bauhaus93.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/icofont.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/plugins.css' %}">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css%22%3E">
+    <link rel="stylesheet" href="{% static 'css/gamecss/helper.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/style.css' %}">
+    <script src="{% static 'js/gamejs/vendor/modernizr-2.8.3.min.js' %}"></script>
+</head>
 
-    <!-- Hero Section-->
-    <section style="background: url({% static 'img/hero.jpg' %}); background-size: cover; background-position: center center" class="hero">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-7">
-            <h1>Bootstrap 4 Blog - A free template by Bootstrap Temple</h1><a href="#" class="hero-link">Discover More</a>
-          </div>
-        </div><a href=".intro" class="continue link-scroll"><i class="fa fa-long-arrow-down"></i> Scroll Down</a>
-      </div>
-    </section>
-    <!-- Intro Section-->
-    <section class="intro">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8">
-            <h2 class="h3">Some great intro here</h2>
-            <p class="text-big">Place a nice <strong>introduction</strong> here <strong>to catch reader's attention</strong>. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderi.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="featured-posts no-padding-top">
-      <div class="container">
-        <!-- Post-->
-        {% for obj in object_list %}
-        <div class="row d-flex align-items-stretch">
-          {% if not forloop.first and not forloop.last %}
-          <div class="image col-lg-5"><img src="{{ obj.thumbnail.url }}" alt="..."></div>
-          {% endif %}
-          <div class="text col-lg-7">
-            <div class="text-inner d-flex align-items-center">
-              <div class="content">
-                <header class="post-header">
-                  <div class="category">
-                    {% for cat in obj.categories.all %}
-                    <a href="#">{{ cat }}</a>
-                    {% endfor %}
-                  </div>
-                  <a href="post.html">
-                    <h2 class="h4">{{ obj.title }}</h2>
-                    </a>
-                </header>
-                <p>{{ obj.overview|linebreaks|truncatechars:200 }}</p>
-                <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
-                    <div class="avatar"><img src="{{ obj.author.profile_picture.url }}" alt="..." class="img-fluid"></div>
-                    <div class="title"><span>{{ obj.author }}</span></div></a>
-                  <div class="date"><i class="icon-clock"></i> {{ obj.timestamp|timesince }} ago</div>
-                  <div class="comments"><i class="icon-comment"></i>{{ obj.comment_count }}</div>
-                </footer>
-              </div>
-            </div>
-          </div>
-          {% if forloop.first or forloop.last %}
-          <div class="image col-lg-5"><img src="{{ obj.thumbnail.url }}" alt="..."></div>
-          {% endif %}
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-    <!-- Divider Section-->
-    <section style="background: url({% static 'img/divider-bg.jpg' %}); background-size: cover; background-position: center bottom" class="divider">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-7">
-            <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</h2><a href="#" class="hero-link">View More</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Latest Posts -->
-    <section class="latest-posts"> 
-      <div class="container">
-        <header> 
-          <h2>Latest from the blog</h2>
-          <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-        </header>
-        <div class="row">
-          {% for obj in latest %}
-          <div class="post col-md-4">
-            <div class="post-thumbnail"><a href="#"><img src="{{ obj.thumbnail.url }}" alt="..." class="img-fluid"></a></div>
-            <div class="post-details">
-              <div class="post-meta d-flex justify-content-between">
-                <div class="date">{{ obj.timestamp }}</div>
-                <div class="category">
-                  {% for cat in obj.topic_title.topic_title %}
-                  <a href="#">{{ cat }}</a>
-                  {% endfor %}
-                  </div>
-              </div><a href="#">
-                <h3 class="h4">{{ obj.title }}</h3></a>
-              <p class="text-muted">{{ obj.overview|linebreaks|truncatechars:200 }}</p>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    <!-- Newsletter Section-->
-    <section class="newsletter no-padding-top">    
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h2>Subscribe to Newsletter</h2>
-            <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          </div>
-          <div class="col-md-8">
-            <div class="form-holder">
-              <form action="" method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    {{ form }}
-                    <button type="submit" class="submit">Signup</button>
+<body>
+
+    <div id="main-wrapper">
+        <header class="header header-static bg-black header-sticky">
+            <div class="default-header menu-right">
+                <div class="container container-1520">
+                    <div class="row">
+                        <div class="col-12 col-md-3 col-lg-3 order-md-1 order-lg-1 mt-20 mb-20">
+                            <div class="logo">
+                                <a href="{% url 'game' %}"><img src="{% static 'images/logo.png' %}" width="50%"
+                                        alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12 order-md-3 order-lg-2 d-flex justify-content-center">
+                            <nav class="main-menu menu-style-2">
+                                <ul>
+                                    <li><a href="{% url 'game' %}">Home</a>
+
+                                    </li>
+                                    <li><a href="{% url 'forums:forumcategroies' %}">Forums</a>
+                                    </li>
+
+                                    <li><a href="{% url 'contact' %}">Contact</a></li>
+
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="col-12 col-md-9 order-md-2 order-lg-3 col-lg-3">
+                            <div class="header-right-wrap">
+                                <ul>
+                                    {% if request.session.Username %}
+
+
+
+
+                                    <div class="account-info">
+                                        <div class="dropdown">
+                                            <button class="fas fa-sort-down"
+                                                style="color: #FF0042; background-color: transparent; border: none;"></button>
+                                            <div class="dropdown-content">
+                                                <a href="{% url 'forums:my_profile' %}">My profile</a>
+                                                <a href="{% url 'signout' %}">Sign out</a>
+
+                                            </div>
+                                        </div>
+
+                                        </i><span class="gameuser"> <img style="border-radius: 50%;" width="20px"
+                                                height="20px" src="{{ Userdetails.url }}">
+                                            {{ request.session.Username }}</span>
+                                        <h5 class="gameemail text-secondary">{{ request.session.Useremail }}</h5>
+
+                                        {% else %}
+                                        <li><a href="{% url 'signin' %}">LOGIN</a></li>
+                                        <li><a href="{% url 'signup' %}">REGISTER</a></li>
+                                        {% endif %}
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-flex d-lg-none">
+                            <div class="mobile-menu">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </form>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Gallery Section-->
-    <section class="gallery no-padding">    
-      <div class="row">
-        <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="img/gallery-1.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-1.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
-        </div>
-        <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="img/gallery-2.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-2.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
-        </div>
-        <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="img/gallery-3.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-3.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
-        </div>
-        <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="img/gallery-4.jpg" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-4.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
-        </div>
-      </div>
-    </section>
+        </header>
 
-{% endblock content %}
+
+
+
+
+
+
+        <div class="wrapper">
+            <div class="inner">
+                <div class="container-fluid text-center">
+
+                    {% if request.session.userid %}
+                    <h1 class="display-4 mb-0 ">Welcome, {{ request.session.Username }}</h1>
+                    {% else %}
+                    <h1 class="display-4 mb-0 ">Welcome, GUEST</h1>
+                    {% endif %}
+                    <p class="lead"><b>AIMARENA</b> is a free browser aim trainer that is specifically designed to
+                        improve the player's aim in various First-Person Shooter games. </p>
+                    <img src="{% static 'images/csgo.png' %}" class="mr-10" width="120px"></img>
+                    <img src="{% static 'images/rb6.png' %}" class="mr-10" width="140px"></img>
+                    <img src="{% static 'images/pubg.png' %}" class="mr-10" width="90px"></img>
+                    <img src="{% static 'images/apex.png' %}" class="mr-10" width="100px"></img>
+                    <img src="{% static 'images/fortnite.png' %}" class="mr-10" width="120px"></img>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            {% for i in banned %}
+            {% if i  %}
+
+            <div id='all' class='all'>
+
+                <div class='outer_red_inner'>
+
+
+
+
+
+                    <div class='ban_info_holder'>
+
+                        <div class='simple_sorry'>
+
+                            <h2>your account is banned from AimArena game.</h2>
+
+                        </div>
+
+
+
+                        <div class='received_from'>
+                            <span style='color: white;'>Username: </span><span
+                                style='color: white;'>{{ request.session.Username }} </span>
+                            <br><br>
+                            <span style='color: red'>Ban type : (Game banned)</span><br>
+                        </div>
+
+                        <div class='admin_reason'>
+
+                            <div class='admin_reason_header'>
+                                <h2 class="text-center">{{ bangame }}</h2>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+            </div>
+            <br> 
+            
+            
+            <br>
+            {% endif %}
+            {% endfor %}
+
+
+            
+
+            <div class="games-area section">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="newsticker pt-2">
+                                <div class="row">
+                                    <div class="col-1 text-center text-light">
+                                        <span
+                                            class="newstickertitle text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;News:</span>
+                                    </div>
+                                    <div class="col-11">
+                                        <marquee> {% for i in bannernews %} &nbsp;&nbsp;{{ i.news }}&nbsp;&nbsp; <img
+                                                src="{% static 'images/favicon.ico' %}" width="20px" /> {% endfor %}
+                                        </marquee>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if request.session.userid %}
+                    {% else %}
+                   <h1 class="text-light text-center"> You need to be logged in to play any game mode</h1><br>
+                    {% endif %}
+                    
+
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-6">
+                            <div class="single-game mb-15">
+                                <div class="game-img">
+                                    <a href="{% url 'game:Ranked' %}"><img src="{% static 'images/practice.jpg' %}"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <div class="single-game mb-15">
+                                <div class="game-img">
+                                    <a href="{% url 'game:lives' %}"><img src="{% static 'images/survivalbanner.jpg' %}"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="single-game mb-15">
+                                <div class="game-img">
+                                    <a href="{% url 'game:casual' %}"><img src="{% static 'images/edited.jpg' %}"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="single-game mb-15">
+                                <div class="game-img">
+                                    <a href="{% url 'leaderboards' %}"><img src="{% static 'images/HighScor.jpg' %}"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="single-game mb-15">
+                                <div class="game-img">
+                                    <a href="{% url 'forums:my_profile' %}"><img
+                                            src="{% static 'images/statistics.jpg' %}" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="single-game mb-15">
+                                <div class="game-img">
+                                    <a
+                                        href="https://docs.google.com/forms/d/e/1FAIpQLSfgoDPDguCX-APR5XzbM5ZWYZSFjYUUWzECdUIWX4hFdhKquQ/viewform"><img
+                                            src="{% static 'images/feedback.jpg' %}" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="single-game mb-15">
+                                <div class="wrappersocial">
+                                    <div class="innersocial">
+                                        <div class="container-fluid text-center pt-30 pb-30">
+                                            <h2 class="text-light ">Follow us on</h2>
+
+                                            <a href="https://www.facebook.com/aim.arena.3" class="fa fa-facebook"></a>
+                                            <a href="https://twitter.com/AIMARENA1" class="fa fa-twitter"></a>
+                                            <a href="https://www.instagram.com/aimarenaoffical/"
+                                                class="fa fa-instagram"></a>
+                                            <a href="https://www.youtube.com/channel/UCpzBnQcZkDuPoZqUudaFX8A"
+                                                class="fa fa-youtube"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="single-game mb-15">
+                                <div class="game-img">
+                                    <a href="{% url 'game:shop' %}"><img src="{% static 'images/shop.jpg' %}"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    {% if messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {%for i in messages %}
+                        {{ i }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-12 mt-30">
+                            <div class="news-latter-area newslatter-black">
+                                <div class="wrapperletter">
+                                    <div class="innerletter">
+                                        <div class="container-fluid text-center">
+                                            <img src="{% static 'images/logonews.png' %}" width="180px"
+                                                class="mt-20 mb-10" />
+                                            <h1 class="display-5 text-light mb-0">Stay up to date with AIMARENA</h1>
+                                            <p class="lead">subscribe to our newsletter for the latest updates for
+                                                AIMARENA stright to our inbox.</p>
+                                            <form action="{% url 'emailnews' %}" method="post"> {% csrf_token %}
+                                                <div class="form-group ml-20 mr-20">
+
+
+                                                    <input type="email" class="form-control" name="emailnews"
+                                                        id="emailnews" aria-describedby="emailHelp"
+                                                        placeholder="Enter your email">
+                                                    <small id="emailHelp" class="form-text mb-0 text-light">We'll never
+                                                        share your email with anyone else.</small>
+                                                </div>
+                                                {% if request.session.userid %}
+                                                <button type="submit" class="btn btn-danger mb-40">Submit</button>
+                                                {% else %}
+                                                <h3 class="text-light">Please login to list your email for our
+                                                    newsletter</h3>
+                                                {% endif %}
+                                                {% for i in subscribed %}
+                                                {% if i.subscription %}
+
+                                                <h4 class="text-light"> You are already subscribed to our news letter,
+                                                    do you want to <a style="color:#dc3545;"
+                                                        href="{% url 'unsubscribe' %}">unsubscribe </a> ?</h4>
+
+                                                {% endif %}
+                                                {% endfor %}
+                                                <br>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="news-latter-area newslatter-black">
+                                <div class="wrapperletter">
+
+                                    <div class="innerletter">
+
+                                        <div class="container-fluid text-center">
+
+                                            <h1 class="display-5 text-light mb-0 pt-20 pb-10">LEADERBOARDS</h1>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-borderless">
+                                                    <thead class="thead-trans">
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Rank</th>
+                                                            <th scope="col">Username</th>
+                                                            <th scope="col">Game Mode</th>
+                                                            <th scope="col">Score</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for i in leaderboards %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            {% if i.Rank.Rank_image %}
+                                                            <td><img width="50rem" height="50rem"
+                                                                    src="{{ i.Rank.Rank_image.url  }}" alt="rank"> </td>
+                                                            {% else %}
+                                                            <td>Unranked</td>
+                                                            {% endif %}
+                                                            <td>{{ i.User_ID.Username }}</td>
+                                                            <td>{{ i.Game_Mode_ID.Mode_Description }}</td>
+                                                            <td>{{ i.Score_Avg|floatformat }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <a href="{% url 'leaderboards' %}"
+                                                class="text-right text-light font-weight-bold pr-10 pb-10">View all</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+</body>
+
+
+
+<footer class="footer-section style-2 section" style="background-color: #ff2828">
+    <div class="footer-top section pt-80 pb-80">
+        <div class="container container-1520">
+            <div class="row justify-content-lg-between">
+                <div class="col-xl-3 col-lg-2 col-md-3">
+                    <div class="footer-widget">
+                        <div class="footer-logo">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-9">
+                    <div class="footer-widget">
+                        <div class="footer-nav">
+                            <nav class="text-center">
+
+                                <a href="https://www.facebook.com/aim.arena.3" class="fa fa-facebook"></a>
+                                <a href="https://twitter.com/AIMARENA1" class="fa fa-twitter"></a>
+                                <a href="https://www.instagram.com/aimarenaoffical/" class="fa fa-instagram"></a>
+                                <a href="https://www.youtube.com/channel/UCpzBnQcZkDuPoZqUudaFX8A"
+                                    class="fa fa-youtube"></a>
+
+                            </nav><br>
+                            <div class="text-center text-light extra">
+                                <a href="{% url 'privacy' %}">Privacy Policy</a> &nbsp;|&nbsp; <a
+                                    href="{% url 'terms' %}">Terms of Use </a> &nbsp;|&nbsp; <a
+                                    href="{% url 'about' %}">About us </a>
+                            </div>
+                            <div class="copyright text-center text-muted">
+                                © 2021 AIMARENA. All Rights Reserved
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-12">
+                    <div class="footer-widget">
+                        <div class="footer-social">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+<script src="{% static 'js/gamejs/vendor/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'js/gamejs/popper.min.js' %}"></script>
+<script src="{% static 'js/gamejs/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/gamejs/plugins.js' %}"></script>
+<script src="{% static 'js/gamejs/main.js' %}"></script>
+
+</html>

@@ -1,22 +1,357 @@
 {% extends 'baseforum.html' %}
+{% load static %}
 {% block title %}
+{% load staff_tags %}
 <title>{{ post.title }}</title>
 {% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/forumcss/post_detail.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="{% static 'js/forumjs/post_detail.js' %}"></script>
+{% endblock %}
 {% block content %}
-<h1>{{ post.title }}</h1>
-<small> By: {{ post.author.Username }} </small>
-<p>{{ post.body }}</p>
-<a href="{% url 'forums:forum' %}"  class="btn btn-secondary" >Back</a>
+
+
+
+
+<div style="display:none; " id="dialog" title="">
+
+ <span id="spanedit" style="float:left; margin:0 7px 50px 0;"> </span>
+        <div id="dialog-form" title="Edit reply">
+
+
+
+    <fieldset>
+
+
+      <input type="text" name="body" id="body" value="" class="text ui-widget-content ui-corner-all">
+
+
+        <button type="submit" onclick="editindb()" tabindex="-1" id="edit" value="" style="position:relative;left:39% ; font-family: 'Bebas Neue'; font-size: 20px;">Save changes</button>
+
+    </fieldset>
+</div>
+
+
+
+</div>
+
+
+
+
+<div id="postmobile" class="post-details">
+
+<h2><a href="javascript:history.go(-1);" class="goback"><i class="fas fa-arrow-left">&nbsp;</i>Back</a></h2>
+
+<h1 class="content-link">{{ post.title }}</h1>
+
+
+
+<p class="account-info-sub4"><img src="{{ post.author.user_thumbnail.url }}" width="20px" style="border-radius:50%; vertical-align: middle;"/> {{ post.author.Username }} - {{ post.timestamp }}</p> 
+
+
 <br>
-<br><br>
+{% if post.thumbnail %}
+<p class="post-body"><img width="50px" height="50px" src="{{ post.thumbnail.url }}"> </p>    {% endif %} <p>{{ post.body|safe }}</p>
+
+<br>
+{% if request.session.userid %}
 <form action="{% url 'forums:like_post' post.pk %}" method="post">
 {% csrf_token %}
+{% if post.is_closed  %}
 
-    {% if liked %}
-    <button class="btn btn-primary btn-sm" type="submit" name="Post_like" value="{{ post.id }}">UnLike</button>
     {% else %}
-    <button class="btn btn-primary btn-sm" type="submit" name="Post_like" value="{{ post.id }}">Like</button>
+    {% if liked %}
+    <button id="like" class="fas fa-thumbs-up" type="submit" name="Post_like" value="{{ post.id }}"> <span>Unlike</span></button>
+
+    {% else %}
+    <button id="like"class="fas fa-thumbs-up" type="submit" name="Post_like" value="{{ post.id }}"> <span>Like</span></button>
     {% endif %}
- Likes : {{ total_likes }}
+ {% endif %}
+
+
+{% if post.is_closed %}
+
+<center><img src="https://img.icons8.com/fluent/48/000000/closed-sign.png"/></center>
+    {% else %}
+    &nbsp;&nbsp;&nbsp;<i id="commentui" class="fas fa-comments" type="submit"  value="{{ post.id }}" > <span style="font-family: 'Bebas Neue';">Comment</span></i>
+
+    <span class="like-counter"> {{ total_likes }} Likes </span>
+{% endif %}
+
+
+
+    <br>
+    <br>
+
+
 </form>
+{% else %}
+
+
+       <div style="text-align: center;"> Please <a href="{% url 'signin' %}">login</a>  or <a href="{% url 'signup' %}">Register</a>  to interact with our community !</div>
+
+{% endif %}
+
+  <div id="snackbar"></div>
+
+
+
+
+  <div id="commentmain" class="row">
+    <div class="column" style="float: left; "><div class="comment-area" id="comment-area">
+        <textarea name="comment" id="textbody" placeholder="Enter comment here"></textarea>
+        <span class="acc-status">Signed in as ({{ request.session.Username }})</span>
+        
+    </div></div>
+    <div class="column2" style="float: right; text-align: right; margin-top: 5px;">
+
+        <button  style="font-family: 'bebas neue'; font-size: 20px;" class="btn btn-primary btn-sm" id="com_submit"  name="Post_comment" type="submit"  value="{{ post.id }}" onclick="showComment()">Submit</button><br>
+        <button  id="cancelcomment" style="font-family: 'bebas neue'; font-size: 20px;" class="btn btn-primary btn-sm" id="com_cancel"  name="Post_cancel" type="submit">Cancel</button>
+    
+      
+    </div>
+        
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+   
+
+
+
+           
+    
+            <br>
+
+
+    <div class="comment-content">
+{% if not post.Post.all %}
+        <div id="nocomments">
+    No comments yet
+        </div>
+{% else %}
+
+
+
+
+
+
+<center><a id="replytoggler">Hide/Show Replies</a></center><br>
+
+
+    {% for comments in com %}
+    <div class="commentone">
+    <div class="hello{{ comments.id }}">
+
+    <p class="account-info-sub3"> <img src="{{ comments.user.user_thumbnail.url }}" width="20px" style="border-radius:50%; vertical-align: middle;"/></img> <span style="color: white;">{{comments.user.Username }}</span> 
+
+
+        <span class="comment-date">
+
+
+
+      <!--- <button class="reply-buttons" data-commentbox="panel1" >Reply </button> | --> {{ comments.date_added }}</span> </p>
+
+
+{% if request.session.userid == comments.user_id %}
+
+        <div class="dropdown" style="float:right;">
+   <div class="three-dots"></div>
+  <div class="dropdown-content">
+     <a style="font-family='Bebas Neue'" > <button value="{{ comments.id }}" class="btncommentdelete" onclick="deletecomment('{{ comments.id }}', '{{ post.title|escapejs  }}')"><span style="color: black;">Delete comment</span></button></a>
+     <a style="font-family='Bebas Neue'" > <button value="{{ comments.id }}" class="btncommentdelete" onclick="editcomment('{{ comments.id }}', '{{ comments.body|escapejs }}')"><span style="color: black;">Edit comment</span></button></a>
+
+  </div>
+</div>
+{% endif %}
+      <p class="comments-body">  {{comments.body }} </p><br>
+
+
+
+  <form method="post" action="{% url 'forums:Comment_post' comments.id %}"> {% csrf_token %}
+{% if post.is_closed %}
+
+
+
+      {% else %}
+
+    <center>  <div id="replysection">
+{% if request.session.userid %}
+        <textarea name="reply" id="reply" placeholder="Reply here "></textarea>
+
+        <input type="hidden" id="post_id"  class="post_id" name = "post_id"  value= {{ post.id }} >
+        <input type="hidden" id="hiddeninput"  class="comment_id" name = "comment_id"  value= {{ comments.id }} >
+ <br>
+      <button class="customized" id="replysubmit" name="replysubmit" type="submit" style="font-family: 'bebas neue'; font-size: 20px;" > Submit</button>
+      <br><br>
+{% endif %}
+    </div>   </center>
+
+    {% endif %}
+ </form>
+
+
+
+
+
+            
+        
+ {% for reply in comments.replies.all %}
+                   {% notdeletedreplies reply.id as deletedreplies %}
+
+        {% if deletedreplies == False %}
+<div class="reply{{reply.id}}">
+ <div id="reply-content" class="reply-bubble">
+   <img src="{{ reply.user.user_thumbnail.url }}" width="20px" style="border-radius:50%; vertical-align: middle;"/></img>  <span style="font-size: 18px">{{ reply.user.Username|capfirst }}</span> <br>{% if request.session.userid == reply.user_id %}
+        <div class="dropdown" style="float:right;">
+   <div class="three-dots"></div>
+  <div class="dropdown-content">
+     <a style="font-family='Bebas Neue'" > <button value="{{ reply.id }}" class="btnreplydelete" onclick="deletereply('{{ reply.id }}')"><span style="color: black;">Delete reply</span></button></a>
+     <a style="font-family='Bebas Neue'" > <button value="{{ reply.id }}" class="btnreplyedit" onclick="editreply('{{ reply.id }}', '{{ reply.body|escapejs }}')"><span style="color: black;">Edit reply</span></button></a>
+
+  </div>
+</div>
+{% endif %}
+  <span class="reply-body-text">{{reply.body}} </span>    <br><span class="reply-date">replied {{reply.date_added|timesince }} ago  </span>
+
+ <br></div>
+        </div>
+{% endif %}
+ {% endfor %}
+
+</div>
+</div>
+ 
+<br>
+
+
+
+{% endfor %}
+
+{% endif %}
+
+</a>
+
+</div>
+<br>
+<h1>Community Rules:</h1>
+<br>
+
+
+<div class="comment-rules">
+
+<p>1. Do not use obscene or offensive language. Be respectful. You may not post or link to any material that could be considered obscene, indecent, lewd, pornographic, violent, abusive, insulting, threatening, harassing or in violation of the law.</p>
+<p><br></p>
+<p>2. Do not post or link to material which might be considered sexist, racist, homophobic, transphobic, ableist or otherwise discriminatory or offensive in nature.</p>
+<p><br></p>
+<p>3. Tell the truth. You may not post or link to any material that could be considered libelous, defamatory or false. Do not accuse an individual who can be identified with a crime, or imply or threaten civil action. Any discussion that originates from criminal or legal accusations made on the forum, against an identifiable private individual, may be deleted.</p>
+<p><br></p>
+<p>4. Respect the privacy of others. Do not harvest or otherwise collect names, email addresses or other identifying information from other participants. Do not post anyone&rsquo;s personal information, even if it&rsquo;s publicly available elsewhere.</p>
+<p><br></p>
+<p>5. Do not steal. Post only those materials for which you have copyright. You may not post material that infringes the rights of others including copyright, trademark, trade secret, privacy, personal or other proprietary rights.</p>
+<p><br></p>
+<p>6. Don&rsquo;t misrepresent yourself as someone else.</p>
+<p><br></p>
+<p>7. Do not post an item for sale, rent or for free that you do not own outright or have the legal right to transfer to someone else. Do not solicit funds under false pretenses or misrepresentation.</p>
+<p><br></p>
+<p>8. Be respectful of others. Do not disrupt comment threads with repetitive, inflammatory posts or off-topic remarks.</p>
+<p><br></p>
+<p>9. Please do not use My Ballard (comments or group) to sell items or market products or services &mdash; unless it&rsquo;s for a good cause.</p>
+
+
+
+</div>
+
+
+
+
+
+
+    </div>
+
+
+<script>
+
+            $(document).on('click', '#com_submit' , function(event){
+                event.preventDefault();
+                console.log("from jquery section")
+                var pk = $(this).attr('value');
+                var body = $("#textbody").val();
+
+if($("#textbody").val().length > 0 ){
+
+
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "forums:Comment_post" post.pk %}',
+                    data: {
+                    'post_id':pk,
+                    'comment':body,
+
+                    action: 'Post_comment',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+
+                    success: function(response){
+
+                         $("#textbody").val('');
+                      window.location.reload();
+                        $('textarea').val('');
+
+
+                    $(".reply-buttons").on("click", function(){ $(this).parent().parent().next().slideToggle("slow"); });
+
+
+                        console.log("comment worked");
+                        $(this).parent().next('#repliedsection').fadeToggle();
+
+                    },
+
+                    error: function(rs, e){
+
+                        console.log("error");
+                    },
+            });
+
+
+            }
+            else {
+      var x = document.getElementById("snackbar");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+      $("#snackbar").html("Please enter a comment to post!");
+
+
+
+            }
+         });
+
+
+         var csrftoken = '{{ csrf_token }}';
+</script>
+
 {% endblock %}

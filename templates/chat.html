@@ -1,0 +1,84 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/forumcss/chat.css' %}">
+<script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+
+
+{% if request.session.userid %}
+
+	{% if request.session.roomName == null  %}
+		<script type="text/javascript">
+			alert("Please Select Room before chat. . .")
+			window.location=" {% url 'room' %}"
+		</script>
+	{% endif %}
+	
+
+<div class="card direct-chat direct-chat-primary">
+	<div class="card-header">
+	  <h3 class="card-title text-center">{{ request.session.roomName }}</h3>
+
+
+
+	  <div class="card-tools">
+		
+		<button type="button" class="btn btn-tool" data-card-widget="collapse">
+		
+		</button>
+		<a href="javascript:history.back()">
+		<button type="button" class="btn btn-tool" data-card-widget="remove">
+		  <i class="fas fa-times"></i></a>
+		</button>
+	  </div>
+
+	</div>
+	</div>
+<br></br>
+<div id="load_tweets"> </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+{% else %}
+<script type="text/javascript">
+	alert("Please Login. . .")
+	window.location=" {% url 'signin' %}"
+</script>
+{% endif %}
+
+<div class="card-footer">
+	<form action="#" id="myform" method="post">
+	  <div class="input-group">
+		<input onkeyup="checkinput(this.value)" type='text' id='chat' name='chat' class="form-control" placeholder="Type Message ..." class="form-control">
+		<span class="input-group-append">
+		  <button type="submit"   value='Send' id ='send' class="btn btn-primary" >Send</button>
+		</span>
+	  </div>
+	</form>
+  </div>
+<script>
+var auto_refresh = setInterval(
+function ()
+{
+$('#load_tweets').load('{% url "fetch" %}').fadeIn("slow");
+}, 90);
+console.log('this is my text', auto_refresh);
+
+$(document).on('click','#send',function(e){
+	e.preventDefault()
+	$.ajax({
+		url:'{% url "chat_sender" %}',
+		data:{
+			chat:$('#chat').val(),
+		},
+		success:function(resp){
+			console.log(resp);
+			console.log('inside response')
+				//window.location="{% url 'chat' %}"
+			$("#chat").val("");
+		}
+	});
+});
+
+
+</script>
+<script src="{% static 'js/forumjs/chat.js' %}"></script>

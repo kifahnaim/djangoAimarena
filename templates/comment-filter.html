@@ -1,0 +1,235 @@
+
+{% for i in thispost %}
+
+<center><a id="replytoggler">Hide/Show Replies</a></center><br>
+
+
+    {% for comments in com %}
+
+    <p class="account-info-sub3"> <i class="fas fa-user"></i>    &nbsp;{{comments.user }}
+
+
+        <span class="comment-date">
+
+
+
+      <!--- <button class="reply-buttons" data-commentbox="panel1" >Reply </button> | --> {{ comments.date_added }}</span> </p>
+
+      <p class="comments-body">  {{comments.body }} </p><br>
+
+
+
+  <form method="post" action="{% url 'forums:Comment_post' comments.id %}"> {% csrf_token %}
+{% if post.is_closed %}
+
+      {% else %}
+    <center>  <div id="replysection">
+        <textarea name="reply" id="reply" placeholder="reply here "></textarea>
+        <a href="{% url 'forums:Comment_post' i.id %}" id="post_id"  class="post_id" name = "post_id"   > </a>
+        <input type="hidden" id="hiddeninput"  class="comment_id" name = "comment_id"  value= {{ comments.id }} >
+ <br>
+      <button class="customized" id="replysubmit" name="replysubmit" type="submit" > Submit</button>
+
+
+    </div>   </center>
+    {% endif %}
+ </form>
+
+
+
+
+
+
+
+ {% for reply in comments.replies.all %}
+
+
+ <div id="reply-content" class="reply-bubble">
+    {{ reply.user|capfirst }}<br>
+  <span class="reply-body-text">{{reply.body}} </span>    <br><span class="reply-date">replied {{reply.date_added|timesince }} ago  </span>
+ <br></div>
+
+ {% endfor %}
+
+
+
+
+<br>
+
+
+
+{% endfor %}
+
+
+{% endfor %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script>
+
+
+
+$( "#replytoggler" ).click(function() {
+    $(".reply-bubble").slideToggle("slow");
+
+});
+
+$("#replytoggler").css({cursor: "pointer"});
+
+
+
+
+
+    $(document).on('submit', '.comment-form', function(event){
+        event.preventDefault();
+        console.log($(this).serialize());
+        $ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                $('.main-comment-section').html(response['form']);
+                $('textarea').val('');
+                $('.reply-btn').click(function() {
+                    $(this).parent().parent().next('.replied-comments').fadeToggle();
+                    $('textarea').val('');
+
+                });
+            },
+            error: function(rs, e) {
+                console.log(rs.responseText);
+            },
+        });
+    });
+
+
+
+    $("textarea").css({width: "8%"});
+    $("textarea").css({float: "center"});
+
+    $("textarea").css({opacity: "0.8"});
+    $(".customized").css({opacity: "0"});
+
+
+    $(function(){
+        $("textarea").focusin(
+            function(){
+                $(this).animate({ "width" : "80%" });
+              $(".customized").animate({opacity: "1"});
+                $(this).css({opacity: "1"});
+
+            },
+
+        );
+
+          $("textarea").focusout(
+            function(){
+                $(this).animate({ "width" : "8%" });
+                $(this).css({opacity: "0.5"});
+               $(".customized").animate({opacity: "0"});
+            },
+
+        );
+    });
+
+
+
+
+
+    jQuery('.toggle-comments-container').on('click', '.toggle-comments', function(e) {
+    e.preventDefault();
+
+    $(this).parent().next('.comment-content').fadeToggle('slow');
+
+});
+
+
+
+
+
+            $(document).on('click', '#com_submit' , function(event){
+                event.preventDefault();
+                console.log("from jquery section")
+                var pk = $(this).attr('value');
+                var body = $("#textbody").val();
+
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: $("#post_id").attr('href'),
+                    data: {
+                    'post_id':pk,
+                    'comment':body,
+
+                    action: 'Post_comment',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                     },
+
+                    success: function(response){
+
+                         $("#textbody").val('');
+                        $("#nocomments").html('');
+                        $('textarea').val('');
+                        $(".comment-content").html(response);
+
+                    $(".reply-buttons").on("click", function(){ $(this).parent().parent().next().slideToggle("slow"); });
+
+
+                        console.log("comment worked");
+                        $(this).parent().next('#repliedsection').fadeToggle();
+
+                    },
+
+                    error: function(rs, e){
+
+                        console.log("error");
+                    },
+            });
+         });
+
+
+
+</script>
+
+<script>
+
+    function showComment(){
+    var commentArea = document.getElementById("comment-area");
+    commentArea.classList.remove("hide");
+}
+
+
+
+function togglereplies(){
+    var replyArea = document.getElementsById("reply-content");
+    replyArea.classList.add("hide");
+}
+
+
+function showreply(){
+    var ReplySection = document.getElementById("replysection");
+    ReplySection.classList.remove("hide");
+
+    var ReplyCancel = document.getElementById("replycancel");
+    ReplyCancel.classList.remove("hide");
+
+
+}
+
+
+
+function hidereply(){
+    var ReplySection = document.getElementById("replysection");
+    ReplySection.classList.add("hide");
+
+
+    var ReplyCancel = document.getElementById("replycancel");
+    ReplyCancel.classList.add("hide");
+}
+
+
+</script>

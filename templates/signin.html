@@ -2,7 +2,58 @@
 {% load static %}
 
 {% block content %}
-	<div class="limiter">
+
+<head>
+	<title>Sign In | AIMARENA</title>
+</head>
+<style>
+	/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #333; /* Black background color */
+  color: #fff; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 2px; /* Rounded borders */
+  padding: 16px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+  animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>
+	<div class="limiter">	
 	<div class="container-login100" style="background-image: url({% static 'images/bg-01.jpg' %})">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
 			<form class="login100-form validate-form" method="POST" >
@@ -12,7 +63,7 @@
 				<span class="login100-form-title p-b-49">
 					Login
 				</span>
-
+		
 
 				<div class="wrap-input100 validate-input m-b-23" data-validate = "Username is reauired">
 					<span class="label-input100">Username</span>
@@ -29,7 +80,7 @@
 				</div>
 				
 				<div class="text-right p-t-8 p-b-31">
-					<a href="#">
+					<a href="{% url 'resetpassword' %}">
 						Forgot password?
 					</a>
 				</div>
@@ -41,36 +92,26 @@
 							Login
 						</button>
 					</div>
-				</div>
-
-				<div class="txt1 text-center p-t-54 p-b-20">
-					<span>
-						Or Login Using
-					</span>
-				</div>
-
-				<div class="flex-c-m">
-					<a href="#" class="login100-social-item bg1">
-						<i class="fa fa-facebook"></i>
-					</a>
-
-					<a href="#" class="login100-social-item bg2">
-						<i class="fa fa-twitter"></i>
-					</a>
-
-					<a href="#" class="login100-social-item bg3">
-						<i class="fa fa-google"></i>
-					</a>
-				</div>
+				</div>			
 
 				<div class="flex-col-c p-t-20">
 					<span class="txt1 p-b-17">
-						Or Sign Up Using
+						Or
+						
 					</span>
 
+					<span class="txt1 p-b-17">
 					<a href="{% url 'signup' %}" class="txt2">
 						Sign Up
 					</a>
+				 &nbsp;
+					|
+					&nbsp;
+					<a href="{% url 'game' %}" class="txt2">
+						Continue as Guest
+					</a>
+						
+					</span>
 				</div>
 
 
@@ -78,9 +119,42 @@
 					<input type="text" name="next" value="{{request.GET.next}}">
 				{% endif %}
 			</form>
+
+			
+			{% if messages %}
+			<div id="snackbar">
+				{% for i in messages %}
+
+				{{ i }}
+
+				{% endfor %}
+			</div>
+				{% else %}
+
+
+			{% endif %}
+
+
+			
+			
+
+
+
 		</div>
+
 	</div>
 </div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(event){
+	var x = document.getElementById("snackbar");
+x.className = "show";
+setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+});
+
+</script>
 
 
 	<div id="dropDownSelect1"></div>

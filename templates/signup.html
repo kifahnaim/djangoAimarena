@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
-<div class="limiter">
+<head>
+	<title>Sign Up | AIMARENA</title>	
+</head>
+<div class="limiter" xmlns:social="http://www.w3.org/1999/xhtml">
 	<div class="container-login100" style="background-image: url({% static 'images/bg-01.jpg' %})">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
 			<form class="login100-form validate-form" method="POST">
@@ -10,7 +12,16 @@
 				<span class="login100-form-title p-b-49">
 					Registration
 				</span>
+				{% if messages %}
+			<div class="alert alert-danger" role="alert">
+				{% for i in messages %}
 
+		{{ i }}
+
+				{% endfor %}
+			</div>
+
+{% endif %}
 				<div class="wrap-input100 validate-input m-b-23" data-validate = "Email is required">
 					<span class="label-input100">First Name</span>
 					<input class="input100" type="text" name="Firstname" placeholder="Type your first name">
@@ -38,21 +49,35 @@
 
 					<span class="focus-input100" data-symbol="&#xf206;"></span>
 				</div>
-
-				<div class="wrap-input100 validate-input" data-validate="Password is required">
+				<div id="Pass">
+				<div class="wrap-input100 validate-input"  data-validate="Password is required">
 					<span class="label-input100">Password</span>
-					<input class="input100" type="password" name="password" placeholder="Type your password" onchange="form.repwd.pattern=this.value">
+					<input class="input100" id="password" type="password" name="password" placeholder="Type your password" onchange="form.repwd.pattern=this.value">
 
+					
 					<span class="focus-input100" data-symbol="&#xf190;"></span>
-				</div>
+				
+						<div class="col-sm-8 col-sm-offset-2">
 
-				<div class="wrap-input100 validate-input" data-validate="Password is required">
+				</div>
+		
+				</div><br>
+					  <div class="pwstrength_viewport_progress"></div>
+					  
+</div>
+				    <div class="row">
+		                <div id="messages" class="col-sm-12"></div>
+		            </div>
+<br>
+				<div class="wrap-input100 validate-input " data-validate="Password is required">
 					<span class="label-input100">Confirm password</span>
-					<input class="input100" type="password" name="repwd" pattern="" required placeholder="Type your password again">
+					<input class="input100" id="cpassword" type="password" name="repwd" pattern="" required placeholder="Type your password again" >					
+
 
 					<span class="focus-input100" data-symbol="&#xf190;"></span>
 				</div>
-
+<br>
+				<span id="pswdconfirm" class="" ></span>
 <!--				<div class="text-right p-t-8 p-b-31">-->
 <!--					<a href="#">-->
 <!--						Forgot password?-->
@@ -63,49 +88,21 @@
 				<div class="container-login100-form-btn">
 					<div class="wrap-login100-form-btn">
 						<div class="login100-form-bgbtn"></div>
-						<button class="login100-form-btn">
+						<button id="create" class="login100-form-btn">
 							Create
 						</button>
 					</div>
 				</div>
 
-				<div class="txt1 text-center p-t-54 p-b-20">
-					<span>
-						Or Signup Using
-					</span>
-				</div>
-
-				<div class="flex-c-m">
-					<a href="#" class="login100-social-item bg1">
-						<i class="fa fa-facebook"></i>
-					</a>
-
-					<a href="#" class="login100-social-item bg2">
-						<i class="fa fa-twitter"></i>
-					</a>
-
-				<div class="g-signin2" data-onsuccess="onSignIn"></div>
-
-				</div>
-				<script>
-					function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-}
-
-				</script>
-
 				<div class="flex-col-c p-t-20">
 					<span class="txt1 p-b-17">
-						Or Login Using
+						Or
 					</span>
 
-					<a href="{% url 'signin' %}" class="txt2">
+					<span class="txt1 p-b-17">
+					<a href="{% url 'signin' %}" class="txt2" style="color: white; text-decoration: none;">
 						Login
-					</a>
+					</a></span>
 				</div>
 			</form>
 		</div>
@@ -114,4 +111,9 @@
 
 
 <div id="dropDownSelect1"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pwstrength-bootstrap/2.2.1/pwstrength-bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+<script src="{% static 'js/forumjs/signup.js' %}"></script>
 {% endblock %}

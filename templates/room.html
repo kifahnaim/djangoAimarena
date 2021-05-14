@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+
+     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+     <link rel="stylesheet" href="{% static 'css/forumcss/room.css' %}">
+    </head>
+<body>
+<form action="{% url 'room' %}" method='post'>
+    {% csrf_token %}
+
+  <div class="container">
+
+  <h2 class="text-light">Create Room</h2>
+    <input type='text' name="room" placeholder="Room name" required>
+      {% if request.session.userid %}
+    <input type="submit" class="button" value='Create Room'>
+        {% endif %}
+  </form>
+
+<br>
+<H1 class="text-center mt-5 mb-5 text-muted">OR</H1>
+
+<div class="form-group">
+  <h2 class="text-light">Select Room</h2>
+        <form action="{% url 'selectRoom' %}" method="POST">
+                {% csrf_token %}
+            <select class="form-control" name = 'room'>
+                <option>Select a room</option>
+            {% for rooms in room %}
+                <option value="{{rooms.id}},{{rooms.name}}">{{rooms.name}}</option>
+            {% endfor %}
+            </select>
+             {% if request.session.userid %}
+            <input type="submit" value="start chat" class="button">
+          {% else %}
+          <br>
+            <center>   <span style="font-family: 'bebas neue'; font-size: 20px; color: white;"> Please <a href="{% url 'signin' %}">login</a>  or <a href="{% url 'signup' %}">Register</a>  to interact with our community !</span></center>
+            {% endif %}
+        </form>
+    </div>
+  </div>
+</body>

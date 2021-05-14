@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+{% load static %}
+{% if request.session.userid %}
+{% for instance in permission %}
+{% if instance.permission_name == "Admin page" or  instance.permission_name == "Forum moderator page" %}
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+  <title> STAFF | AIMARENA</title>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/staffcss/staffposts.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+</head>
+
+
+
+
+<body class="hold-transition sidebar-mini">
+
+<!-- Site wrapper -->
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Navbar Search -->
+      <li class="nav-item">
+        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+          <i class="fas fa-search"></i>
+        </a>
+        <div class="navbar-search-block">
+          <form class="form-inline">
+            <div class="input-group input-group-sm">
+              <input class="form-control form-control-navbar" id="postsearch" type="search" placeholder="Search" aria-label="Search">
+              <div class="input-group-append">
+                <button class="btn btn-navbar" type="submit">
+                  <i class="fas fa-search"></i>
+                </button>
+                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </li>
+
+
+    </ul>
+  </nav>
+
+  <!-- Main Sidebar Container -->
+ <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  
+ 
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar user panel (optional) -->
+      {% for instance in userdetails %}
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+        <div class="image">
+          <img src="{{ instance.user_thumbnail.url }}" class="img-circle elevation-2" alt="User Image">
+
+        </div>
+
+        <div class="info">
+          <a href=" {% url 'forums:my_profile' %} " class="d-block">{{ instance.Username }}</a>
+
+        </div>
+
+
+      </div>
+{% endfor %}
+      <!-- SidebarSearch Form -->
+
+      <!-- Sidebar Menu -->
+
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+               <li class="nav-item">
+                <a href="../" class="nav-link">
+                  <i class="fas fa-arrow-left"></i>
+                  <p>
+                    Back
+                  
+                  </p>
+                </a>
+             
+              </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Mailbox
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+            
+              <li class="nav-item">
+                <a href="{% url 'staff:compose' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Compose</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+
+
+
+      
+
+
+
+
+
+
+
+        </ul>
+      </nav>
+
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>POSTS</h1>
+          </div>
+             <div id="success" class="col-sm-6">
+
+          </div>
+          <div class="col-sm-6">
+         
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+<div style="display:none;" id="my_dialog" title="Delete post">
+<p>
+<span id="text" ></span>
+
+</p></div>
+
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">POSTS</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="tableposts">
+          <table class="table table-striped projects">
+              <thead>
+                  <tr>
+                      <th style="width: 1%">
+                          #
+                      </th>
+                      <th style="width: 20%">
+                          Post title
+                      </th>
+                      <th style="width: 25%">
+                         Post description
+                      </th>
+                          <th style="width: 20%">
+                         Post Image
+                      </th>
+
+                                  <th style="width: 10%">
+                         Username
+                      </th>
+                      <th style="width:10%">Status</th>
+
+    <th style="width: 13%">
+                      </th>
+    <th style="width: 17%">
+                      </th>
+
+                  </tr>
+
+              </thead>
+
+              <tbody>
+              {% for obj in manageposts %}
+                  <tr>
+                      <td>
+                           {{ obj.id }}
+                      </td>
+                      <td>
+                          <a>
+                             {{ obj.title }}
+                          </a>
+                          <br/>
+                          <small>
+                              {{ obj.timestamp|timesince }}
+                          </small>
+                      </td>
+
+                      <td>
+                           {{ obj.body|safe }}
+                      </td>
+                      <td>
+                          <ul class="list-inline">
+                              <li   class="list-inline-item">
+                                  {% if obj.thumbnail %}
+                                  <img style="background-color:#000;" alt="Avatar" class="table-avatar" src="  {{ obj.thumbnail.url }}">
+                                  {% endif %}
+                              </li>
+
+                          </ul>
+                      </td>
+                    <td>
+                          <a>
+                               {{ obj.author.Username }}
+                          </a>
+
+                      </td>
+                      <td>
+{% if obj.deleted %}
+
+                          <img width="20px" src="{% static 'images/remove.png' %}" alt="deleted">
+
+
+                          {% else %}
+                       <img  width="20px" src="https://img.icons8.com/color/48/26e07f/ok.png"/>
+                          {% endif %}
+                      </td>
+{% if obj.deleted %}
+<td></td> <td id="tdundo" >   <button id="undo" onclick="undopost({{obj.id}})" value="{{obj.id}}"> <a id="undourl" href="{% url 'staff:undoposts' obj.id %}">Undo Post</a></button></td>
+
+                      {% else %}
+            {% if obj.is_closed  == True %}
+             <td id="tdopen" >   <button id="open" onclick="openpost('{{obj.id}}')" value="{{obj.id}}"> <a id="openurl" href="{% url 'staff:openposts' obj.id %}">Open Post</a></button></td>
+            {% else %}
+             <td id="tdclose" >   <button id="close" onclick="closepost('{{obj.id}}')" value="{{obj.id}}"> <a  id="closeurl"  href="{% url 'staff:closeposts' obj.id %}">Close Post</a></button></td>
+        {% endif %}
+
+            <td><button id="delete" onclick='deleteconfirm("{{obj.id}}", "{{obj.title|escapejs}}")' value="{{manage.id}}">Delete Post</button></td>
+            <a style="display:none;" id="deleteurl" href="{% url 'staff:deleteposts' obj.id %}"></a>
+{% endif %}
+                  </tr>
+
+{% endfor %}
+              </tbody>
+          </table>
+                </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 1.0
+    </div>
+    <strong>Copyright &copy; 2021 AIMARENA.</strong>
+    All rights reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+<script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/maps/usa_states.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{% static 'dist/js/pages/dashboard2.js' %}"></script>
+
+</body>
+
+
+
+
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+<script>
+
+
+var csrftoken = '{{ csrf_token }}';
+
+ var searchposts = document.getElementById('postsearch');
+
+   searchposts.addEventListener('keyup',(e)=> {
+    const searchvaluesposts= e.target.value;
+  if(searchvaluesposts.length>0){
+    filterposts();
+    }
+     else if(searchvaluesposts.length == 0){
+   let _html= ' <div class="tableposts">\
+          <table class="table table-striped projects">\
+              <thead>\
+                  <tr>\
+                      <th style="width: 1%">\
+                          #\
+                      </th>\
+                      <th style="width: 20%">\
+                          Post title\
+                      </th>\
+                      <th style="width: 25%">\
+                         Post description\
+                      </th>\
+                          <th style="width: 20%">\
+                         Post Image\
+                      </th>\
+                                  <th style="width: 10%">\
+                         Username\
+                      </th>\
+                        <th style="width:10%">Status</th>\
+    <th style="width: 13%">\
+                      </th>\
+    <th style="width: 17%">\
+                      </th>\
+                  </tr>\
+              </thead>\
+              <tbody>\
+              {% for obj in manageposts %}\
+                  <tr>\
+                      <td>\
+                           {{ obj.id }}\
+                      </td>\
+                      <td>\
+                          <a>\
+                             {{ obj.title }}\
+                          </a>\
+                          <br/>\
+                          <small>\
+                              {{ obj.timestamp|timesince }}\
+                          </small>\
+                      </td>\
+                      <td>\
+                           {{ obj.body|safe|escapejs }}\
+                      </td>\
+                      <td>\
+                          <ul class="list-inline">\
+                              <li class="list-inline-item">\
+                                   {% if obj.thumbnail %}\
+                                  <img style="background-color:#000;" alt="Avatar" class="table-avatar" src="{{ obj.thumbnail.url }}">\
+                                  {% endif %}\
+                              </li>\
+                          </ul>\
+                      </td>\
+                    <td>\
+                          <a>\
+                               {{ obj.author.Username }}\
+                          </a>\
+                      </td>\
+                     <td>\
+{% if obj.deleted %}\
+                          <img width="20px" src="{% static 'images/remove.png' %}" alt="deleted">\
+                          {% else %}\
+                       <img  width="20px" src="https://img.icons8.com/color/48/26e07f/ok.png"/>\
+                          {% endif %}\
+                      </td>\
+{% if obj.deleted %}\
+<td></td> <td id="tdundo" >   <button id="undo" onclick="undopost({{obj.id}})" value="{{obj.id}}"> <a id="undourl" href="{% url 'staff:undoposts' obj.id %}">Undo Post</a></button></td>\
+                      {% else %}\
+            {% if obj.is_closed  == True %}\
+             <td id="tdopen" >   <button id="open" onclick="openpost({{obj.id}})" value="{{obj.id}}"> <a id="openurl" href="{% url 'staff:openposts' obj.id %}">Open Post</a></button></td>\
+            {% else %}\
+             <td id="tdclose" >   <button id="close" onclick="closepost({{obj.id|escapejs}})" value="{{obj.id}}"> <a  id="closeurl"  href="{% url 'staff:closeposts' obj.id %}">Close Post</a></button></td>\
+        {% endif %}\
+            <td><button id="delete" onclick="deleteconfirm({{obj.id}}, {{obj.title|escapejs}})" value="{{manage.id}}">Delete Post</button></td>\
+            <a style="display:none;" id="deleteurl" href="{% url 'staff:deleteposts' obj.id %}"></a>\
+{% endif %}\
+                  </tr>\
+{% endfor %}\
+              </tbody>\
+          </table>\
+                </div>';
+                console.log('_html');
+                console.log(_html);
+
+   $(".tableposts").html(_html);
+
+                }
+
+  });
+
+
+  function filterposts(){
+
+          $.ajax({
+
+                type :"POST",
+                url:" {% url 'staff:searchposts' %}",
+                data : {
+                   "search_text":$("#postsearch").val(),
+                  'csrfmiddlewaretoken': csrftoken,
+                },
+                success :function(response){
+                    var filtereddata =response;
+
+                if(response.filtereddata != "No Posts found!"){
+
+
+                console.log(filtereddata);
+                     $(".tableposts").empty();
+                    $(".tableposts").html(filtereddata);
+
+                }else{
+                _nouser='<div class="topic-container"><center><h1>No Posts found!</h1> </center></div>';
+             $(".tableposts").html(_nouser);
+
+                }
+
+
+
+
+                },
+                error: function(rs, e){
+                   console.log("oops error!");
+                  },
+
+           });
+
+
+
+}
+</script>
+  <script src="{% static 'js/staffjs/staffposts.js' %}"></script>
+
+
+</html>
+{% endif %}
+{% endfor %}
+{% endif %}

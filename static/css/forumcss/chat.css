@@ -1,0 +1,36 @@
+.card-footer{
+position: fixed;
+bottom: 0px;
+width: 100%;
+background-image: linear-gradient(rgba(0, 0, 0, 0.479), rgba(0, 0, 0, 0.479));
+-webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(15px);
+color: white;
+}
+
+#chat{
+	color: white;
+
+}
+
+
+
+#send{
+	background-image: linear-gradient(#f62541,#f62541);
+	border: none;
+}
+
+#send:hover{
+	background-image: linear-gradient(#af192d,#af192d);
+	border: none;
+}
+
+
+
+.card-header, .card-title{
+	background-image: linear-gradient(black, black);
+	border: none;
+	color: white;
+}
+
+

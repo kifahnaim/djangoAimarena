@@ -1,0 +1,583 @@
+<!doctype html>
+{% load static %}
+
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Ranked Mode | AIMARENA</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'assets/images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+    <link rel="stylesheet" href="{% static 'css/gamecss/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/qanto.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/bauhaus93.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/icofont.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/plugins.css' %}">
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css%22%3E">
+    <link rel="stylesheet" href="{% static 'css/gamecss/helper.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gamecss/ranked.css' %}">
+    <script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'assets/css/stylebtn.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/js/bootstrap-colorpicker.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/gamejs/ranked.js' %}"></script>
+    <meta charset="utf-8" />
+    <script src="{% static 'assets/js/vendor/modernizr-2.8.3.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/gamecss/modalstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/stylecount.css ' %}">
+
+<style>
+@media only screen and ( max-width: 640px ) {
+    #gamecontainer{
+        display: none;
+    }
+
+  body{
+      background-color: black;
+  }
+
+  }
+
+
+  @media only screen and ( min-width: 640px ) {
+    #mobileview{
+        display: none;
+    }
+
+  }
+    </style>
+</style>
+</head>
+
+<body>
+    <div id="mobileview" class="text-center">
+        <br><br>
+        <img src="{% static 'images/logo.png' %}" width="50%">
+        <h3 style="text-align: center; color: #f62541;">This game doesn't function on small width screens.</h1><br><br>
+            <span class="text-light mb-3">Go back to:</span><br>
+
+
+            <a href="{% url 'game' %}"><button class="btn btn-danger">Homepage</button></a> &nbsp;&nbsp;&nbsp;
+            <a href="{% url 'forums:forum' %}"> <button class="btn btn-danger">Forum</button></a>
+
+
+
+    </div>
+
+
+
+
+    <div id="gamecontainer">
+
+        <div id="main-wrapper">
+            <header class="header header-static bg-black header-sticky">
+                <div class="default-header menu-right">
+                    <div class="container container-1520">
+                        <div class="row">
+                            <div class="col-12 col-md-3 col-lg-3 order-md-1 order-lg-1 mt-20 mb-20">
+                                <div class="logo">
+                                    <a href="{% url 'game' %}"><img src="{% static 'images/logo.png' %}" width="50%"
+                                            alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12 order-md-3 order-lg-2 d-flex justify-content-center">
+                                <nav class="main-menu menu-style-2">
+                                    <ul>
+                                        <li><a href="{% url 'game' %}">Home</a>
+
+                                        </li>
+                                        <li><a href="{% url 'forums:forum' %}">Forums</a>
+                                        </li>
+
+                                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="col-12 col-md-9 order-md-2 order-lg-3 col-lg-3">
+                                <div class="header-right-wrap">
+                                    <ul>
+                                        {% if request.session.Username %}
+
+
+
+
+                                        <div class="account-info">
+                                            <div class="dropdown" style="float:right;">
+                                                &nbsp;<button class="fas fa-sort-down"
+                                                    style="color: #FF0042; background-color: transparent; border: none;"></button>
+                                                <div class="dropdown-content">
+                                                    <a href="{% url 'forums:my_profile' %}">My profile</a>
+                                                    <a href="{% url 'signout' %}">Sign out</a>
+
+                                                </div>
+                                            </div>
+
+                                            </i><span class="gameuser"> <img style="border-radius: 50%;" width="20px"
+                                                    height="20px" src="{{ Userdetails.url }}">
+                                                {{ request.session.Username }}</span>
+                                            <h5 class="gameemail text-secondary">{{ request.session.Useremail }}</h5>
+
+                                            {% else %}
+                                            <li><a href="{% url 'signin' %}">LOGIN</a></li>
+                                            <li><a href="{% url 'signup' %}">REGISTER</a></li>
+                                            {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+
+
+            <div class="innercasual mb-30">
+
+
+                <div class="container-fluid text-center" id="custom">
+
+                    <br><br>
+                    <h1 class="display-4 ">RANKED MODE</h1>
+
+                    <button id="showstats"><i class="fas fa-arrow-circle-down"></i>&nbsp;&nbsp;Expand
+                        Statistics</button>
+                    <button id="hidestats"><i class="fas fa-arrow-circle-up"></i>&nbsp;&nbsp;Hide Statistics</button>
+                    <br>
+                    <br>
+                    <div id="hideme">
+                        <br>
+
+                        <span class="scores"><i class="far fa-clock"></i>&nbsp;Recent Matches:{% for i in lastmatches %}
+                            {{ i.Score }}XP | {% endfor %}</span>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="mySidebar" class="sidebar">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+                <div id="side">
+                    <a class="subnav">Game Background</a>
+                    <br>
+                    <div class="container-fluid customization">
+                        <div class="row text-center">
+                            <div class="col"><button class="red" onclick="changeColorRed()"></button><br>
+                                <p class="text-light colordesc">Red</p>
+                            </div>
+                            <div class="col"><button class="white" onclick="changeColorWhite()"></button><br>
+                                <p class="text-light colordesc">White</p>
+                            </div>
+                            <div class="col"><button class="blue" onclick="changeColorBlue()"></button><br>
+                                <p class="text-light colordesc">Blue</p>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row text-center">
+                            <div class="col"><button class="black" onclick="changeColorBlack()"></button><br>
+                                <p class="text-light colordesc">Black</p>
+                            </div>
+                            <div class="col"><button class="grey" onclick="changeColorGrey()"></button><br>
+                                <p class="text-light colordesc">Grey</p>
+                            </div>
+                            <div class="col">
+
+                                <div style="text-align: center">
+                                    <input type="text" id="hex">
+                                    <input type="color" id="color">
+                                    <p class="text-light colordesc">Custom</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+
+                    <a class="subnav">Pointer</a>
+                    <div class="container-fluid customization">
+                        <div class="row text-center">
+                            <div class="col"> <button class="targetsp2" id="changetarget"
+                                    onclick="changeTarget();"></button><br>
+                                <p class="text-light colordesc">Style 1</p>
+                            </div>
+
+
+
+                            <div class="col"> <button class="targetsp1" id="changetarget1"
+                                    onclick="changeTarget1();"></button><br>
+                                <p class="text-light colordesc">Style 2</p>
+                            </div>
+
+                            <div class="col"> <button class="targetsp3" id="changetarget2"
+                                    onclick="changeTarget2();"></button><br>
+                                <p class="text-light colordesc">Default</p>
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+
+                    <br>
+
+                    <a class="subnav">Targets</a>
+
+                    <div class="container-fluid customization">
+                        <div class="row text-center">
+                            default:
+                            <button onclick="changetodefault()"> <img width="30px" height="30px"
+                                    src="{% static 'images/red.jpeg' %}"> </button>
+
+                            {% for i in sprites %}
+
+
+                            <div class="col"> <button class="buttonsp1" id="changesprite"
+                                    onclick="changeSprite('{{ i.product.product_spriteimage.url }}');"><img width="30px"
+                                        height="30px" src="{{ i.product.product_image.url }}"></button><br>
+                                <p class="text-light colordesc">{{ i.product.product_name }}</p>
+                            </div>
+                            {% endfor %}
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                </div>
+                <div>
+
+                </div>
+
+            </div>
+
+            <button id="openm" class="openbtn" onclick="openNav()"><i class="fas fa-palette"></i></button>
+
+            <h3 class="text-center missioninfo"> <i class="fas fa-info-circle"></i> MISSION INFO </h3>
+
+            <p class="text-center text-light modedesc">
+                Achieve new ranks in AIMARENA by Competing in this mode. Shoot the targets in a set of time, get a score
+                then try to beat it next time. You will be ranked after playing 5 rounds.</p>
+
+            <div id="extrashidden">
+
+                <img id="scream6" width="20" height="20" src="{% static 'images/target.png' %}" alt="The Scream6">
+
+                <img id="scream5" width="20" height="20" src="{% static 'images/accuracy.png' %}" alt="The Scream5">
+
+                <img id="scream4" width="20" height="20" src="{% static 'images/deadline.png' %}" alt="The Scream4">
+
+                <img id="scream3" width="20" height="20" src="{% static 'images/bullet.png' %}" alt="The Scream3">
+
+                <img id="scream2" width="20" height="20" src="{% static 'images/gameback.jpg' %}" alt="The Scream2">
+
+                <img id="scream" width="20" height="20" src="{% static 'images/s.PNG' %}" alt="The Scream">
+
+            </div>
+
+
+
+
+
+            <div class="playbtn-center">
+                <div class="playbtn" id="button" onclick="showCanvas()">PLAY</div>
+            </div>
+
+
+            <div id="countdown" class="demo" style="display: none; margin-top: 150px;">
+                <div class="demo__colored-blocks">
+                    <div class="demo__colored-blocks-rotater">
+                        <div class="demo__colored-block"></div>
+                        <div class="demo__colored-block"></div>
+                        <div class="demo__colored-block"></div>
+                    </div>
+                    <div class="demo__colored-blocks-inner"></div>
+                    <div class="demo__text">Ready</div>
+                </div>
+                <div class="demo__inner">
+                    <svg class="demo__numbers" viewBox="0 0 100 100">
+                        <defs>
+                            <path class="demo__num-path-1" d="M40,28 55,22 55,78" />
+                            <path class="demo__num-join-1-2" d="M55,78 55,83 a17,17 0 1,0 34,0 a20,10 0 0,0 -20,-10" />
+                            <path class="demo__num-path-2" d="M69,73 l-35,0 l30,-30 a16,16 0 0,0 -22.6,-22.6 l-7,7" />
+                            <path class="demo__num-join-2-3" d="M28,69 Q25,44 34.4,27.4" />
+                            <path class="demo__num-path-3" d="M30,20 60,20 40,50 a18,15 0 1,1 -12,19" />
+                        </defs>
+                        <path class="demo__numbers-path" d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19
+               Q25,44 34.4,27.4
+               l7,-7 a16,16 0 0,1 22.6,22.6 l-30,30 l35,0 L69,73
+               a20,10 0 0,1 20,10 a17,17 0 0,1 -34,0 L55,83
+               l0,-61 L40,28" />
+                    </svg>
+                </div>
+            </div>
+
+
+            <div id="Screen">
+
+
+
+
+                <canvas id="canvas">
+
+                    Your browser does not support the HTML5 canvas tag.</canvas>
+
+
+                <input type="hidden" value="" id="shots">
+                <input type="hidden" value="" id="hits">
+                <input type="hidden" value="" id="accuracy">
+
+                <span id="timer"></span></h5>
+
+                <button type="button" id="modalbtn" class="btn btn-primary" data-toggle="modal"
+                    data-target="#exampleModalCenter">
+
+                </button>
+                <svg class="defs">
+                    <defs>
+                        <symbol id="s-star" viewbox="0 0 210 210">
+                            <polygon
+                                points="98.4999978 153.75 38.2520165 185.424245 49.7583542 118.337123 1.01670635 70.8257603 68.3760155 61.037872 98.5000012 1.1379786e-14 128.624005 61.0378871 195.98331 70.8258091 147.241642 118.337136 158.747982 185.424247"
+                                transform="translate(10,10)" />
+                        </symbol>
+                    </defs>
+                </svg>
+
+                <div data-backdrop="static" data-keyboard="false" class="modal fade" id="exampleModalCenter"
+                    tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <h1 class="modal-title" style="font-family: 'Bebas Neue';" id="exampleModalLongTitle">
+                                    Final result</h1>
+
+                            </div>
+                            <div class="test">
+                                <div class="modal-body">
+                                    <div class="demo2 demo2--lights demo2ovr">
+
+
+                                        <h1 id="congrats"></h1>
+
+                                        <div id="imagemodal"></div>
+                                        <br><br>
+                                        <h2 style="font-size: 40px; font-family: 'Bebas Neue'; color: black;">Score</h2>
+                                        <p style="font-size: 30px; margin-top: -20px; color: rgb(80, 80, 80);"
+                                            id="scoretext"> </p>
+                                        <h2 style="font-size: 40px; font-family: 'Bebas Neue'; color: black;">
+                                            Accuracy<span class="text-secondary" style="font-size: 20px;">(%)</span>
+                                        </h2>
+                                        <p style="font-size: 30px; margin-top: -20px; color: rgb(80, 80, 80);"
+                                            id="accuracytext"> </p>
+                                        <img src="/static/images/logosil.png" width="100px" class="mt-50">
+
+
+
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <br>
+                            <br>
+                            <center>
+
+
+                                <button id="Mainmenu" type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    onclick="mainmenu();">Main Menu</button>
+                                <button id="RestartGame" type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    onclick="restartgame();">Restart Game</button>
+
+
+                            </center>
+
+
+                            <center>
+
+
+
+                                <br>
+                                <div id="sharescores">
+                                    <p class="text-light sharescores">Share your scores</p> <br><br>
+
+                                    <a id="facebook" href="" target="popup">
+                                        <div class="socialbuttonfb text-center">
+                                            <i class="fab fa-facebook-f"></i>&nbsp;&nbsp;Share
+                                        </div>
+                                    </a>
+                                    &nbsp;&nbsp;&nbsp;
+
+
+                                    <a id="twitter" href="" target="popup">
+                                        <div class="socialbuttontw text-center">
+                                            <i class="fab fa-twitter"></i>&nbsp;&nbsp;Tweet
+                                        </div>
+                                    </a>
+
+                                </div>
+                            </center>
+
+                            <p class="text-light text-center pt-10 pb-10">Ranked Mode</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <center>
+<br><br><br><br><br>
+                <div id="disqus_thread" style="width: 50%; background-color: black; padding: 20px;"></div>
+                <script>
+                    (function () { // DON'T EDIT BELOW THIS LINE
+                        var d = document,
+                            s = d.createElement('script');
+                        s.src = 'https://aimarena.disqus.com/embed.js';
+                        s.setAttribute('data-timestamp', +new Date());
+                        (d.head || d.body).appendChild(s);
+                    })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments
+                        powered by Disqus.</a></noscript>
+
+
+                <div id="gametools">
+
+
+
+                    <img src="{% static 'images/speaker.png' %}" title="mute/unmute" id="speaker"
+                        onclick="toggleSound();">&nbsp;&nbsp;
+                    <img src="{% static 'images/fullscreen.png' %}" width="2%" title="toggle fullscreen" id="Fullscreen"
+                        onclick="fullscreen();">
+
+
+
+                </div>
+
+
+
+                <br>
+
+
+                <br> <br>
+
+
+
+
+            </Center><br><br><br>
+
+
+
+
+            <div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <footer class="footer-section style-2 section" style="background-color: #ff2828">
+            <div class="footer-top section pt-80 pb-80">
+                <div class="container container-1520">
+                    <div class="row justify-content-lg-between">
+                        <div class="col-xl-3 col-lg-2 col-md-3">
+                            <div class="footer-widget">
+                                <div class="footer-logo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-9">
+                            <div class="footer-widget">
+                                <div class="footer-nav">
+                                    <nav class="text-center">
+
+                                        <a href="#" class="fa fa-facebook"></a>
+                                        <a href="#" class="fa fa-twitter"></a>
+                                        <a href="#" class="fa fa-instagram"></a>
+                                        <a href="#" class="fa fa-youtube"></a>
+
+                                    </nav><br>
+                                    <div class="text-center text-light extra">
+                                        <a href="{% url 'privacy' %}">Privacy Policy</a> &nbsp;|&nbsp; <a
+                                            href="{% url 'terms' %}">Terms of Use </a> &nbsp;|&nbsp; <a
+                                            href="{% url 'about' %}">About us </a>
+                                    </div>
+                                    <div class="copyright text-center text-muted">
+                                        © 2021 AIMARENA. All Rights Reserved
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-lg-4 col-md-12">
+                            <div class="footer-widget">
+                                <div class="footer-social">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <script src="{% static 'assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+
+
+
+
+
+    <script>
+        var defaults = "{% static 'images/sprite.png' %}";
+        var speakerurl = "{% static 'images/speaker.png' %}";
+        var muteurl = "{% static 'images/mute.png' %}";
+        var spriteurl = "{% static 'images/sprite.png' %}";
+        var targeturl = "{% static 'images/target.gif' %}";
+        var explosionurl = "{% static 'images/explosion.png' %}";
+        var bang = "{% static 'music/bang.wav' %}";
+        var saveurl = "{% url 'game:savescore' %}";
+        var csrftoken = '{{ csrf_token }}';
+        var target1 = "{% static 'images/target.gif' %}";
+        var target2 = "{% static 'images/target2.gif' %}";
+        var target3 = "{% static 'images/target3.gif' %}";
+        var homepage = "{% url 'game' %}"
+    </script>
+
+
+
+    <script src="{% static 'assets/js/plugins.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+{% load static %}
+{% load staff_tags %}
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{subtopic.sub_topic_title}} | FORUMS</title>
+  <link rel="stylesheet" href="{% static 'css/Styleforum.css' %}">
+  <script src="https://kit.fontawesome.com/baf7f11007.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital@1&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+
+  <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js">
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+  <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+  <link href="{% static 'css/forumcss/forumcategorieseach.css' %}" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js">
+  <script src="{% static 'js/forumjs/forumcategorieseach.js' %}"></script>
+
+</head>
+
+<body>
+
+  <header>
+    <div class="navbar">
+      <nav class="navigation hide" id="navigation">
+        <span class="close-icon" id="close-icon" onclick="showIconBar()"><i class="fa fa-close"></i></span>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="{% url 'forums:forumcategroies' %}">Forums</a></li>
+          <li class="nav-item"><a href="{% url 'forums:my_post' %}"> My Posts</a></li>
+
+        </ul>
+      </nav>
+      <a class="bar-icon" id="iconBar" onclick="hideIconBar()"><i class="fa fa-bars"></i></a>
+      <div class="brand"><img src="{% static 'images/logo.png' %}" width="150px" /></div>
+
+
+
+      {% if request.session.Username %}
+
+
+      <div class="account-info">
+
+        <div class="dropdown" style="float:right; z-index: 3;">
+          <button class="fas fa-sort-down" style="color: #FF0042;"></button>
+          <div class="dropdown-content">
+            <a href="my_profile">My profile</a>
+            <a href="{% url 'signout' %}">Sign out</a>
+
+          </div>
+        </div>
+
+
+
+        </i><img style="border-radius: 50%;" width="20px" height="20px" src="{{ Userdetails.url }}">
+        {{ request.session.Username }}<h5 class="account-sub">{{ request.session.Useremail }}</h5>
+
+
+        {% else %}
+
+        <div class="account-info">
+
+
+          <a href="{% url 'signin' %}">Login</a> &nbsp;&nbsp;<span style="font-size: 18px;">OR</span>&nbsp;&nbsp; <a
+            href="{% url 'signup' %}">Register</a> </div>
+
+
+        {% endif %}
+
+      </div>
+
+    </div>
+    {% if request.session.userid %}
+
+
+    <div class="icon" onclick="toggleNotifi()" style="position: absolute; right: 0px; top: 105px;">
+      <span style="font-family: 'bebas neue'; font-size: 20px;"><i
+          class="fas fa-bell"></i>&nbsp;&nbsp;{{ count_notifications }}</span>
+    </div>
+
+    <div class="notifi-box" id="box" style="background-color: black;">
+      <div style="background-color: #262020;">
+        <h2 style="font-size: 18px; font-family: 'bebas neue';">Notifications <span
+            style="float: right; font-size: 15px; font-family: 'bebas neue';">{{ count_notifications }}</span></h2>
+      </div>
+      {% endif %}
+      
+      {% for instance in notifi_text %}
+      <div class="notifi-item">
+
+        <div class="text">
+          <h4 style="font-family: Arial, Helvetica, sans-serif">Post &nbsp;<span
+              style="color: white;">{{ instance.post.title }}</span></h4>
+          <p style="font-family: Arial, Helvetica, sans-serif;">{{ instance.text_preview }} </p>
+          <p style="font-family: Arial, Helvetica, sans-serif;">{{instance.date}}</p>
+        </div>
+
+      </div>
+      {% endfor %}
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <!--SearchBox Section-->
+
+    <div class="navigate header2">
+      <span><a style="cursor:pointer;" href="">&nbsp;&nbsp;&nbsp;Forums</a> > <a>{{subtopic.sub_topic_title}}</a>
+      </span>
+    </div>
+  </header>
+
+
+
+
+
+
+
+
+  <div class="container">
+
+    <!-- about -->
+
+    <div class="profile-container">
+      <h1>Your browsing {{subtopic.sub_topic_title}} </h1>
+    </div><br>
+    <div class="profile-desc">There is a total of {{ stuffcount }} posts</div>
+    <div id="success"></div>
+    {% if request.session.Username %}
+    {% if userbanforum %}
+    {% if createappeal == True %}
+    {% else %}
+
+    {% if topicvisible == True %}
+
+    <div class="post-settings" id="post-create"><a><i class="fas fa-plus-circle"></i>&nbsp; new post</a></div>
+
+    <div class="post-settings" id="post-create-hide"><a><i class="fas fa-plus-circle"></i>&nbsp; hide post creator</a>
+    </div>
+    {% else %}
+
+    <p style="float:right;"> Only staff can post here !</p>
+    {% endif %}
+
+    {% endif %}
+
+    {% else %}
+
+    {% if topicvisible == True %}
+
+    <div class="post-settings" id="post-create"><a><i class="fas fa-plus-circle"></i>&nbsp; new post</a></div>
+
+    <div class="post-settings" id="post-create-hide"><a><i class="fas fa-plus-circle"></i>&nbsp; hide post creator</a>
+    </div>
+    {% else %}
+
+    <p style="float:right;"> Only staff can post here !</p>
+    {% endif %}
+    {% endif %}
+
+
+
+
+    {% endif %}
+
+
+
+
+    <div id="notecont">
+
+      <input id="title"
+        style="background-color: #131415 ; color:white; margin-bottom: 10px; border-radius: 5px; padding: 7px; width: 100%;"
+        type="text" placeholder="Enter title"><br>
+      <textarea id="summernote" name="summernote"></textarea>
+
+      <div style="margin-top: 10px; float: right;">
+        <button id="showimage" type="submit">Insert image</button> <button id="addpostbtn" onclick="onclickadd()"
+          type="submit">Add Post</button>
+      </div>
+
+
+
+      <br><br>
+      <center>
+        <div class="drag-area" style="display: none;">
+          <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <header>Drag & Drop to Upload File</header>
+          <span>OR</span>
+          <button>Browse File</button>
+          <input id="postimageid" name="postimage" type="file" hidden>
+
+        </div>
+      </center>
+
+
+    </div>
+    <div id="snackbar">Post added successfully !</div>
+    <br>
+
+    <script>
+      csrftokrn = '{{ csrf_token }}';
+
+      $('#summernote').summernote({
+
+        placeholder: 'Enter post details',
+        tabsize: 2,
+        height: 220,
+        maxHeight: 220,
+        minHeight: 220,
+        focus: true,
+        disableResizeEditor: true,
+
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['view', ['fullscreen', 'help']]
+        ]
+      });
+    </script>
+    <div class="pre-loader">
+      <div class="sk-fading-circle">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+      </div>
+    </div>
+
+    {% if topicpinnedvisible == True %}
+
+
+
+    <div class="posts-table">
+
+      <div class="table-head">
+
+        <div class="subjects">&nbsp;&nbsp; <img width="20px" src="{% static 'images/pin.png' %}">&nbsp; &nbsp; Pinned
+          Posts</div>
+        {% for i in permission %}
+        {% if i.can_view %}
+        <div class="replies">&nbsp;&nbsp;Actions</div><br>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+
+      {% for instance2 in pinned %}
+      <div class="table-row">
+
+        <div class="subjects">
+
+          <a href="{% url 'forums:Post_detail' instance2.pk %}">
+            <p class="text-title"> {{ instance2.title }}</p>
+          </a>
+          <p class="text-body">{{ instance2.body|safe }}</p>
+
+
+          <hr>
+
+          <P class="post-timestamp modifications">posted by&nbsp;&nbsp;<img
+              src="{{ instance2.author.user_thumbnail.url }}" width="16px"
+              style="border-radius:50%; vertical-align: middle;" />&nbsp;{{ instance2.author.Username }} &nbsp;on
+            {{ instance2.timestamp }}</P>
+
+        </div>
+        {% for i in permission %}
+        {% if i.can_view %}
+        <div class="replies">
+
+
+          <div class="dropdown">
+            <div class="three-dots"></div>
+            <div class="dropdown-content" style="background-color: black !important;">
+              <a style="font-family='Bebas Neue'"> <button value="{{ instance2.id }}" class="btncommentdelete"
+                  onclick="unpinpost('{{ instance2.id }}', '{{ instance2.title }}')"><span style="color: black">Remove
+                    pin</span></button></a>
+
+            </div>
+          </div>
+
+        </div>
+
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% empty %}<br>
+      <center>
+        <h2 style="font-family: 'Bebas Neue';">No Pinned posts </h2>
+      </center>
+
+      {% endfor %}
+
+
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    {% endif %}
+
+
+    {% if page.has_next or not page.has_next and not page.has_previous %}
+
+
+    {% if topicacceptedappeal %}
+
+
+    <div class="table-head">
+
+      <div class="subjects">&nbsp;&nbsp; <img width="20px"
+          src="https://img.icons8.com/fluent/48/000000/approval.png" />&nbsp; &nbsp; <a style="color:white;"
+          href="{% url 'forums:typeofposts' 'acceptedappeal' %}">Accepted Appeals</a></div>
+
+    </div>
+
+    {% for i in acceptedappeal %}
+    <div class="table-row">
+
+      <div class="subjects">
+        <a href="{% url 'forums:Post_detail' i.pk %}">
+          <p class="text-title"> {{ i.title }} </p>
+        </a>
+        <p class="text-body"> {{ i.body|safe }}</p>
+
+        <hr>
+
+        <P class="post-timestamp modifications">posted by&nbsp;&nbsp;<img src="{{ i.author.user_thumbnail.url }}"
+            width="16px" style="border-radius:50%; vertical-align: middle;" />&nbsp;{{ i.author.Username }} &nbsp;on
+          {{ i.timestamp }}</P>
+
+      </div>
+    </div>
+
+    {% empty %}
+    <center>
+      <h2>No accepted appeals</h2>
+    </center>
+    {% endfor %}
+    <br> <br>
+    {% endif %}
+    <div id="bannedmodal"></div>
+    {% if userbanforum %}
+    <script>
+      {
+        %
+        if createappeal == False %
+      }
+      $("#bannedmodal").html(
+        "<div id='errorWrapper'><div id='error403'></div><p id='errorText'><span class='red'>Warning !</span><br> You're banned from the forums, you can post an appeal to be reviewed by staff members!</p></div>"
+        );
+
+      setTimeout(function () {
+        $("#bannedmodal").fadeOut("slow", function () {
+          // Animation complete.
+        });
+      }, 3000); {
+        %
+        else %
+      }
+      $("#bannedmodal").html(
+        "<div id='errorWrapper'><div id='error403'></div><p id='errorText'><span class='red'>Warning !</span><br> You're banned from the forums, you have already posted an appeal, please wait until it is reviewed by staff members!</p></div>"
+        );
+
+      setTimeout(function () {
+        $("#bannedmodal").fadeOut("slow", function () {
+          // Animation complete.
+        });
+      }, 3000); {
+        % endif %
+      }
+    </script>
+    {% endif %}
+
+    {% if topicrejectedappeal %}
+
+    <div class="table-head">
+
+      <div class="subjects">&nbsp;&nbsp; <img width="20px"
+          src="https://img.icons8.com/color/48/000000/unfriend-female.png" />&nbsp; &nbsp; <a style="color:white;"
+          href="{% url 'forums:typeofposts' 'rejectedappeal' %}">Rejected Appeals</a></div>
+
+    </div>
+    {% for i in rejectedappeal %}
+    <div class="table-row">
+
+      <div class="subjects">
+        <a href="{% url 'forums:Post_detail' i.pk %}">
+          <p class="text-title"> {{ i.title }} </p>
+        </a>
+        <p class="text-body"> {{ i.body|safe }}</p>
+
+        <hr>
+
+        <P class="post-timestamp modifications">posted by&nbsp;&nbsp;<img src="{{ i.author.user_thumbnail.url }}"
+            width="16px" style="border-radius:50%; vertical-align: middle;" />&nbsp;{{ i.author.Username }} &nbsp;on
+          {{ i.timestamp }}</P>
+
+      </div>
+    </div>
+    {% empty %}
+    <center>
+      <h2>No rejected appeals</h2>
+    </center>
+    {% endfor %}
+    <br> <br>
+    {% endif %}
+
+    {% if topicacceptedvisible == True %}
+
+    <div class="table-head">
+
+      <div class="subjects">&nbsp;&nbsp; <img width="20px"
+          src="https://img.icons8.com/fluent/48/000000/approval.png" />&nbsp; &nbsp;<a style="color:white;"
+          href="{% url 'forums:typeofposts' 'accept' %}">Accepted Posts</a></div>
+
+    </div>
+    {% for i in accepted %}
+    <div class="table-row">
+
+      <div class="subjects">
+        <a href="{% url 'forums:Post_detail' i.pk %}">
+          <p class="text-title"> {{ i.title }}</p>
+        </a>
+        <p class="text-body">{{ i.body|safe }}</p>
+
+        <hr>
+
+        <P class="post-timestamp modifications">posted by&nbsp;&nbsp;<img src="{{ i.author.user_thumbnail.url }}"
+            width="16px" style="border-radius:50%; vertical-align: middle;" />&nbsp;{{ i.author.Username }} &nbsp;on
+          {{ i.timestamp }}</P>
+
+      </div>
+    </div>
+    {% endfor %}
+    <br> <br>
+    {% endif %}
+
+    {% if topicrejectedvisible == True %}
+
+    <div class="table-head">
+
+      <div class="subjects">&nbsp;&nbsp;&nbsp;&nbsp;<img width="20px"
+          src="https://img.icons8.com/color/48/000000/unfriend-female.png" />&nbsp; &nbsp; <a style="color:white;"
+          href="{% url 'forums:typeofposts' 'reject' %}">Rejected Posts</a></div>
+
+    </div>
+    {% for i in rejected %}
+
+    <div class="table-row">
+
+      <div class="subjects">
+        <a href="{% url 'forums:Post_detail' i.pk %}">
+          <p class="text-title"> {{ i.title }}</p>
+        </a>
+        <p class="text-body">{{ i.body|safe }}</p>
+
+        <hr>
+
+        <P class="post-timestamp modifications">posted by&nbsp;&nbsp;<img src="{{ i.author.user_thumbnail.url }}"
+            width="16px" style="border-radius:50%; vertical-align: middle;" />&nbsp;{{ i.author.Username }} &nbsp;on
+          {{ i.timestamp }}</P>
+
+      </div>
+    </div>
+    {% empty %}
+    <center>
+      <h2>There is no rejected posts</h2>
+    </center>
+    {% endfor %}
+    <br>
+    <br>
+    {% endif %}
+
+    {% endif %}
+
+
+
+
+    <div class="posts-table">
+
+      <div class="table-head">
+
+        <div class="subjects">&nbsp;&nbsp;Posts</div>
+        <div class="replies">&nbsp;&nbsp;Replies/Views</div><br>
+
+
+      </div> {% for instance in item %}
+
+
+
+      <div class="table-row">
+
+        <div class="subjects">
+          <a href="{% url 'forums:Post_detail' instance.pk %}">
+            <p class="text-title"> {{ instance.title }}</p>
+          </a>
+          <p class="text-body">{{ instance.body|safe }}</p>
+
+
+          <hr>
+
+          <P class="post-timestamp modifications">posted by&nbsp;&nbsp;<img
+              src="{{ instance.author.user_thumbnail.url }}" width="16px"
+              style="border-radius:50%; vertical-align: middle;" />&nbsp;{{ instance.author.Username }} &nbsp;on
+            {{ instance.timestamp }}</P>
+
+        </div>
+
+        <div class="replies">
+          {% for i in permission %}
+          {% if i.can_view %}
+          <div class="dropdown">
+            <div class="three-dots"></div>
+
+
+            <div class="dropdown-content" style="background-color: black !important;">
+              {% if topicpinnedvisible == True %}
+              <a style="font-family='Bebas Neue'"> <button value="{{ instance.id }}" class="btncommentdelete"
+                  onclick="pinpost('{{ instance.id }}')"><span style="color: black;">Pin post</span></button></a>
+              {% endif %}
+              {% if topicrejectedvisible == True and topicacceptedvisible %}
+              <a style="font-family='Bebas Neue'"> <button value="{{ instance.id }}" class="btncommentdelete"
+                  onclick="acceptpost('{{ instance.id }}', '{{ instance.title }}')"><span
+                    style="color: black;">Approve</span></button></a>
+              <a style="font-family='Bebas Neue'"> <button value="{{ instance.id }}" class="btncommentdelete"
+                  onclick="rejectpost('{{ instance.id }}', '{{ instance.title }}')"><span
+                    style="color: black;">Reject</span></button></a>
+
+              {% endif %}
+
+              {% if topicacceptedappeal == True and topicrejectedappeal %}
+
+              <a style="font-family='Bebas Neue'"> <button value="{{ instance.id }}" class="btncommentdelete"
+                  onclick="acceptappeal('{{ instance.id }}', '{{ instance.title }}')"><span
+                    style="color: black;">Accept</span></button></a>
+              <a style="font-family='Bebas Neue'"> <button value="{{ instance.id }}" class="btncommentdelete"
+                  onclick="rejectappeal('{{ instance.id }}', '{{ instance.title }}')"><span
+                    style="color: black;">Reject</span></button></a>
+
+              {% endif %}
+
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% countcommments instance.id as countofcomments %}
+          {% countviews instance.id as countofviews %}
+          <p class="values"> <i class="fas fa-comments fa-1x"></i> &nbsp;&nbsp;&nbsp;{{ countofcomments }}
+            &nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-eye fa-1x"></i></i>&nbsp;&nbsp;&nbsp;{{ countofviews }}</p>
+        </div>
+
+      </div>
+
+
+
+      {% endfor %}
+
+      <div class="footer-number">
+        {% if page.has_next %}
+        <a href="?page={{page.next_page_number}}">Next Page</a>
+        {% endif %}
+
+        {% if page.has_previous %}
+        &nbsp;
+        |
+        &nbsp; <a href="?page={{page.previous_page_number}}">Previous Page</a>
+        {% endif %}
+
+
+      </div>
+
+
+
+    </div>
+
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="{% static 'js/forummain.js' %}"></script>
+  <script src="{% static 'js/forumjs/script.js' %}"></script>
+  <script>
+    $("#post-create").click(function () {
+
+      $("#notecont").slideDown(1000);
+      $("#post-create-hide").show(1000);
+      $("#post-create").hide(1000);
+    });
+
+    $("#post-create-hide").click(function () {
+      $("#notecont").slideUp(1000);
+      $("#post-create-hide").hide(1000);
+      $("#post-create").show(1000);
+    });
+    var postimagefile;
+    $(document).ready(function () {
+      postimagefile = document.getElementById("postimageid");
+    });
+
+    function onclickadd() {
+
+      if ($("#title").val().length > 0) {
+
+        if ($("#summernote").val().length > 0) {
+          var title = $("#title").val();
+          var slug = '{{subtopic.slug}}';
+          var body = $('#summernote').val();
+
+          var formData = new FormData();
+
+          formData.append("image", postimagefile.files[0]);
+          formData.append("slug", slug);
+          formData.append("title", title);
+          formData.append("body", body);
+          console.log(formData);
+          $.ajax({
+            type: "POST",
+            url: "{% url 'forums:create_forum'  %} ",
+
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+              // setting a timeout
+              $(".pre-loader").css("display", "block");
+            },
+            complete: function () {
+
+              $(".pre-loader").css("display", "none");
+
+            },
+            success: function (response) {
+              console.log(response);
+              if (response.filtereddata != "fail") {
+                $("#notecont").hide(1000);
+                $("#post-create-hide").hide(1000);
+                $("#post-create").show(1000);
+                setTimeout(function () {
+                  window.location.href = '';
+                }, 2000);
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+                $("#snackbar").html("Post added successfully !");
+
+              } else {
+                var x = document.getElementById("snackbar");
+                $("#snackbar").html("Error occured");
+                x.className = "show";
+                setTimeout(function () {
+                  x.className = x.className.replace("show", "");
+                }, 3000);
+              }
+            },
+            error: function (rs, e) {
+              console.log("oops error!");
+            },
+          });
+        } else {
+          var x = document.getElementById("snackbar");
+          $("#snackbar").html("Please fill the body text of the post !");
+          x.className = "show";
+          setTimeout(function () {
+            x.className = x.className.replace("show", "");
+          }, 3000);
+        }
+      } else {
+        var x = document.getElementById("snackbar");
+        $("#snackbar").html("Please fill the title of the post !");
+        x.className = "show";
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 3000);
+      }
+    }
+  </script>
+
+  <div id="page-container">
+    <div id="content-wrap">
+    </div>
+
+    <footer id="footer">
+      <span>&copy; 2021 AIMARENA. All Rights Reserved</span>
+    </footer>
+  </div>
+</body>

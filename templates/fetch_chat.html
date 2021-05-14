@@ -1,0 +1,79 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+{% if  request.session.userid %}
+
+
+<Style>
+*, .direct-chat-msg{
+	background-color: black;
+	background-image: linear-gradient(black,black);
+	color: white;
+   border: none;
+	margin: 0px;
+	padding: 0px;
+
+}
+.container{
+	margin-top: -70px;
+
+}
+	.custom{
+		background-image: linear-gradient(#f62541,#f62541);
+		color: white;
+		border: none;
+	}
+	.custom2{
+		background-image: linear-gradient(rgb(219, 219, 219),rgb(195, 194, 194));
+		color: black;
+		border: none;
+	}
+
+</Style>
+<div class="container">
+
+{% for data in data1 reversed%}
+
+ {% if data.uid.id == request.session.userid %}
+
+
+ <div class="direct-chat-msg">
+	<div class="direct-chat-infos clearfix">
+	  <span class="direct-chat-name float-left">{{ data.uid }}</span>
+	  <span class="direct-chat-timestamp float-right">{{ data.date_created }}</span>
+	</div>
+	<!-- /.direct-chat-infos -->
+	<img class="direct-chat-img" src="{{ data.uid.user_thumbnail.url }}" alt="">
+	<!-- /.direct-chat-img -->
+	<div class="direct-chat-text custom">
+	  {{ data.chat }}
+	</div>
+	<!-- /.direct-chat-text -->
+  </div>
+
+	{% else %}
+
+
+	<div class="direct-chat-msg right">
+		<div class="direct-chat-infos clearfix">
+		  <span class="direct-chat-name float-right">{{ data.uid.Username }}</span>
+		  <span class="direct-chat-timestamp float-left">{{ data.date_created }}</span>
+		</div>
+		<!-- /.direct-chat-infos -->
+		<img class="direct-chat-img" src="{{ data.uid.user_thumbnail.url }}" alt="">
+		<!-- /.direct-chat-img -->
+		<div class="direct-chat-text custom2">
+			{{ data.chat }}
+		</div>
+		<!-- /.direct-chat-text -->
+	  </div>
+
+
+	{% endif %}
+
+
+{% endfor %}
+
+	</div>
+
+	{% endif %}

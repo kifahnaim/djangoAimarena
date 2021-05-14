@@ -2,28 +2,76 @@
 {% load static %}
 
 {% block content %}
+<body>
+
 <div class="container-login100" style="background-image: url({% static 'images/bg-01.jpg' %})">
     <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
         <div class="m-b-23">
             {% if request.session.Username %}
+            {% if kicked == "You were recently kicked, please behave well!" %}
+
+		    <div class="alert alert-warning">
+                <strong>Warning!</strong> {{kicked}}
+            </div>
+		    {% endif %}
+            {% if banforum %}
+              <div class="alert alert-warning">
+                <strong>Warning!</strong> {{banforum}}
+            </div>
+            {% endif %}
+
+                  {% if bangame %}
+              <div class="alert alert-warning">
+                <strong>Warning!</strong> {{bangame}}
+            </div>
+            {% endif %}
 
             <h2>Welcome {{ request.session.Username }}!</h2>
 
-            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          
         </div>
         <div class="m-b-23">
-            <h5>Name: {{ request.session.Firstname }} {{ request.user.last_name }}</h5>
-            <span class="focus-input100" data-symbol="&#xf206;"></span>
+            <h5><i class="far fa-user"></i>&nbsp; {{ request.session.Firstname }} {{ request.session.Lastname }}</h5>
+        
         </div>
         <div class="m-b-23">
-            <h5>Email: {{ request.session.Useremail }}</h5>
-            <span class="focus-input100" data-symbol="&#xf206;"></span>
+            <h5><i class="far fa-envelope-open"></i>&nbsp;&nbsp;{{ request.session.Useremail }}</h5>
+            
         </div>
         <div class="m-b-23">
             <a href="{% url 'signout' %}" class="btn btn-primary">Logout</a>
-            <span class="focus-input100" data-symbol="&#xf206;"></span>
+            
         </div>
+         <div id="counter" class="m-b-23 text-center">
+             You will be redirected in 5
+         </div>
     </div>
+
     {% endif %}
 </div>
+<script>
+
+var counter = 5;
+var interval = setInterval(function() {
+    counter--;
+    $("#counter").text("You will be redirected in "+counter);
+    // Display 'counter' wherever you want to display it.
+    if (counter == 1) {
+    var url ;
+        {% if role == "User" %}
+             url = "{% url 'game' %}";
+         {% else %}
+            url = "{% url 'staff:baseview' %}"
+         {% endif %}
+        window.location = url;
+        clearInterval(interval);
+
+    }
+}, 1000);
+
+
+</script>
+</body>
+
 {% endblock %}
+

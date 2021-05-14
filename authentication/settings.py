@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+import django_heroku
+import dj_database_url
+import decouple
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,20 +26,25 @@ SECRET_KEY = 'rwdbr9asa!^#xwuehz%kubfj1=b!u!jcdjq-dh$9w&o^g=(@j5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'authapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authapp',
     'forum',
-    'useraddpost',
+    'chat',
+    'staff',
+    'six',
+    'nonmotiongame',
+    'home',
+
 ]
 
 MIDDLEWARE = [
@@ -63,7 +70,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'forum.views.CountNotifications',
+                'nonmotiongame.views.bannedfromgame',
             ],
+            'libraries': {
+                'staff_tags': 'forum.templatetags.staff_tags',
+
+            }
         },
     },
 ]
@@ -77,7 +90,7 @@ WSGI_APPLICATION = 'authentication.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'seniorproject',
+        'NAME': 'seniordatabase',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',  # Or an IP Address that your DB is hosted on
@@ -87,6 +100,11 @@ DATABASES = {
         'init_command': 'SET default_storage_engine=INNODB',
     }
 }
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -111,14 +129,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Beirut'
 
 USE_I18N = True
 
 USE_L10N = True
-
-USE_TZ = True
-
+APPEND_SLASH = False
+USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -127,3 +144,27 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Email settings
+
+DEFAULT_FROM_EMAIL = 'aimarenaofficial@gmail.com'
+SERVER_EMAIL = 'aimarenaofficial@gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'aimarenaofficial@gmail.com'
+EMAIL_HOST_PASSWORD = 'aimarena'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media/'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'extraPlugins': 'codesnippet',
+        'toolbar': 'full',
+    },
+}
+
+django_heroku.settings(locals())

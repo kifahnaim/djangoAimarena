@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+{% load static %}
+
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'images/favicon.ico' %}" type="img/x-icon" rel="shortcut icon">
+  <title> STAFF | AIMARENA</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+</head>
+
+{% if request.session.userid %}
+{% for instance in permission %}
+{% if instance.permission_name == "Admin page" or  instance.permission_name == "Forum moderator page" %}
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+
+  <!-- Preloader -->
+
+
+
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-dark">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Navbar Search -->
+
+
+
+
+
+      <!-- Notifications Dropdown Menu -->
+
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+          <i class="fas fa-th-large"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="../" class="brand-link">
+      <img src="{% static 'images/logo.png' %}"  class="brand-image img-circle" style="opacity: .8">
+
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        {% for instance in userdetails %}
+        <div class="image">
+          <img src="{{ instance.user_thumbnail.url }}" class="img-circle elevation-2" alt="User Image">
+        </div>
+
+        <div class="info">
+          <a class="d-block">{{ instance.Username }}</a>
+
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <!-- SidebarSearch Form -->
+
+      <!-- Sidebar Menu -->
+
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+
+               <li class="nav-item">
+                <a href="../" class="nav-link">
+                  <i class="fas fa-arrow-left"></i>
+                  <p>
+                    Back
+                  
+                  </p>
+                </a>
+             
+              </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Mailbox
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              
+              <li class="nav-item">
+                <a href="{% url 'staff:compose' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Compose</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+        </ul>
+      </nav>
+
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">STAFF PAGE</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a >STAFF</a></li>
+              <li class="breadcrumb-item active">STAFF PAGE</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+
+
+
+<div id="success"></div>
+
+
+    <!-- Main content -->
+    <div class="container-fluid">
+      <!-- Info boxes -->
+
+
+
+            <!-- /.card-header -->
+
+            <!-- /.row -->
+
+            <!-- Main row -->
+
+            <!-- Left col -->
+
+            <!-- /.col -->
+
+<div style="display:none; " id="dialog" title="">
+
+ <span  style="float:left; margin:0 7px 50px 0;"></span>
+      <span id="dtext"></span>
+
+
+
+   Edit sub-topic <b><span class="username"></span></b>
+                   <div class="card-body p-0">
+
+
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>sub-topic title</label>
+                        <input required type="text" id="editsubtitle" name="subtitle" class="form-control" placeholder="Enter sub-topic title">
+                      </div>
+
+                      <!-- textarea -->
+                      <div class="form-group">
+                        <label>sub-topic description</label>
+                        <textarea required id="editsubdescription" name="subdescription" class="form-control" rows="3" placeholder="Enter sub-topic description"></textarea>
+                      </div>
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="editvisible"  name="visible" value="True"  >
+                          <label for="editvisible" class="custom-control-label" >Visible</label>
+                        </div>
+                                         <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="editacceptedstaff"  name="acceptedstaff" value="True" >
+                          <label for="editacceptedstaff" class="custom-control-label" >Show accepted staff applications</label>
+                        </div>
+                                            <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="editrejectedstaff"  name="rejectedstaff" value="True"  >
+                          <label for="editrejectedstaff" class="custom-control-label" >Show rejected staff applications</label>
+                        </div>
+                                               <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="editonlystaff"  name="onlystaff" value="True" >
+                          <label for="editonlystaff" class="custom-control-label" >Only staff can add posts</label>
+                        </div>
+                                               <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="editacceptedappeal"  name="acceptedappeal" value="True"  >
+                          <label for="editacceptedappeal" class="custom-control-label" >Show accepted appeals</label>
+                        </div>
+                                         <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="editrejectedappeal"  name="rejectedappeal" value="True" >
+                          <label for="editrejectedappeal" class="custom-control-label" >Show rejected appeals</label>
+                        </div>
+                                    <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="editpinned"  name="pinned"  value="True" >
+                          <label for="editpinned" class="custom-control-label" >Show pinned division</label>
+                        </div>
+            <div class="form-group">
+                        <label>Custom Select</label>
+                        <select required id="dropdowntopicsedit" name="dropdowntopics" class="custom-select">
+                            {% for instance in subtopicsdistinct  %}
+                              <option  value= "{{ instance.id }}">{{ instance.topic_title }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+  <center>
+  <div class="form-group">
+  <input type="submit" id="submiteditsdialog" class="btn btn-lg btn-primary" value="submit" >
+  </div>
+</center>
+
+
+</div>
+</div>
+            <!-- USERS LIST -->
+                       <div class="card">
+              <div class="card-header border-transparent">
+                <h3 class="card-title">sub-topics</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table m-0">
+                    <thead>
+                    <tr>
+
+      <th scope="col">Sub-topic</th>
+      <th scope="col">Sub-topic description</th>
+
+      <th scope="col">show pin division</th>
+                        <th scope="col">show rejected appeal</th>
+                         <th scope="col">show accepted appeal</th>
+                           <th width="7%" scope="col">Only staff can add posts</th>
+                         <th scope="col">show accepted staff applications</th>
+                         <th scope="col">show rejected staff applications</th>
+<th scope="col">Topic</th>
+ <th scope="col">visible</th>
+                      <th width="10%" scope="col"></th>
+                       <th width="10%" scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+  {% for obj in subtopics %}
+                    <tr>
+<td>{{obj.sub_topic_title}}</td>
+<td>{{obj.sub_topic_description}}</td>
+     <td> {{ obj.pinned_visible }}</td>
+                         <td> {{ obj.rejectedappeal_visible }}</td>
+                        <td> {{ obj.acceptedappeal_visible }}</td>
+
+                        {% if obj.is_visible %}
+                        <td> <img width="30px" height="30px" src="{% static 'images/no.png' %}"></td>
+                        {% else %}
+                          <td> <img width="30px" height="30px" src="{% static 'images/yes.png' %}"></td>
+                        {% endif %}
+                            <td>{{ obj.accepted_visible }}</td>
+                        <td>{{ obj.rejected_visible }}</td>
+                        <td>{{ obj.topic }}</td>
+                      {% if obj.subtopic_visible %}
+
+                      <td><img width="50px" height="50px" src="{% static 'images/visible.png' %}"></td>
+                      {% else %}
+                      <td><img width="50px" height="50px" src="https://img.icons8.com/carbon-copy/100/000000/hide.png"/></td>
+                      {% endif %}
+
+
+
+                       <a style="display:none;" class="edittopic" href="{% url 'staff:staffsubtopicsedit' obj.id %}" >Edit sub-topic </a>
+                      <td><button id="edit" onclick="dialogfunc('{{obj.id|escapejs }}', '{{obj.sub_topic_title|escapejs }}', '{{obj.sub_topic_description|escapejs }}', '{{obj.subtopic_visible}}' , '{{obj.pinned_visible}}','{{obj.accepted_visible}}','{{obj.rejected_visible}}','{{obj.acceptedappeal_visible}}','{{obj.rejectedappeal_visible}}','{{obj.is_visible}}')"  value="{{obj.id}}" class="edit">Edit sub-topic</button></td>
+
+                        {% if obj.subtopic_deleted %}
+                          <a style="display:none;" class="undotopic" href="{% url 'staff:staffsubtopicsundo' obj.id %}" >undo sub-topic </a>
+                          <td><button id="undo" value="{{obj.id}}" class="undo">Undo sub-topic</button></td>
+                        {% else %}
+  <a style="display:none;" class="deletetopic" href="{% url 'staff:staffsubtopicsdelete' obj.id %}" >Delete sub-topic </a>
+
+                      <td><button id="delete" value="{{obj.id}}" class="delete">Delete sub-topic</button></td>
+                         {% endif %}
+                    </tr>
+{% endfor %}
+
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.table-responsive -->
+              </div>
+              <!-- /.card-body -->
+
+
+
+              <!-- /.card-footer -->
+            </div>
+
+
+            <div class="card ">
+              <div class="card-header border-transparent">
+                <h3 class="card-title">Create sub-topic</h3>
+
+                <div class="card-tools ml-20">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0 ml-3">
+               <form action="{% url 'staff:staffsubtopicscreate' %}" method="post"> {% csrf_token %}
+
+                      <!-- text input -->
+                      <div class="form-group">
+                        <label>sub-topic title</label>
+                        <input required type="text" id="subtitle" name="subtitle" class="form-control" placeholder="Enter sub-topic title">
+                      </div>
+
+                      <!-- textarea -->
+                      <div class="form-group">
+                        <label>sub-topic description</label>
+                        <textarea required id="subdescription" name="subdescription" class="form-control" rows="3" placeholder="Enter sub-topic description"></textarea>
+                      </div>
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="visible"  name="visible" value="True" >
+                          <label for="visible" class="custom-control-label" >Visible</label>
+                        </div>
+                                         <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="acceptedstaff"  name="acceptedstaff" value="True" >
+                          <label for="acceptedstaff" class="custom-control-label" >Show accepted staff applications</label>
+                        </div>
+                                            <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="rejectedstaff"  name="rejectedstaff" value="True" >
+                          <label for="rejectedstaff" class="custom-control-label" >Show rejected staff applications</label>
+                        </div>
+                                               <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="onlystaff"  name="onlystaff" value="True" >
+                          <label for="onlystaff" class="custom-control-label" >Only staff can add posts</label>
+                        </div>
+                                               <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="acceptedappeal"  name="acceptedappeal" value="True" >
+                          <label for="acceptedappeal" class="custom-control-label" >Show accepted appeals</label>
+                        </div>
+                                         <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="rejectedappeal"  name="rejectedappeal" value="True" >
+                          <label for="rejectedappeal" class="custom-control-label" >Show rejected appeals</label>
+                        </div>
+                                    <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input" type="checkbox" id="pinned"  name="pinned" value="True" >
+                          <label for="pinned" class="custom-control-label" >Show pinned division</label>
+                        </div>
+            <div class="form-group"><br>
+                        <label>Custom Select</label>
+                        <select required name="dropdowntopics" class="custom-select">
+                            {% for instance in subtopicsdistinct  %}
+                              <option  value= "{{ instance.id }}">{{ instance.topic_title }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+
+  <center>
+  <div class="form-group">
+  <input type="submit" id="submittopic" class="btn btn-lg btn-primary" value="submit" >
+  </div>
+</center>
+               </form>
+
+
+
+
+
+
+                <!-- /.table-responsive -->
+              </div>
+
+              <!-- /.card-body -->
+
+              <div class="card-footer clearfix">
+
+              </div>
+
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+
+            <!-- /.col -->
+
+
+            <!-- /.card -->
+
+            <!-- PRODUCT LIST -->
+
+          <!-- /.col -->
+        </div>
+      
+        <!-- /.row -->
+      </div><!--/. container-fluid -->
+
+      <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2021 AIMARENA.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- overlayScrollbars -->
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+<script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/maps/usa_states.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dist/js/demo.js' %}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{% static 'dist/js/pages/dashboard2.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="{% static 'js/staffjs/staffsubtopic.js' %}"></script>
+  <script>
+var csrftoken = '{{ csrf_token }}';
+
+  </script>
+
+
+
+
+</body>
+
+{% endif %}
+{% endfor %}
+{% endif %}
+</html>
