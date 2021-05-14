@@ -1,1 +1,1 @@
-web : gunicorn django-authentication-master.wsgi
+web:gunicorn authentication.wsgi
