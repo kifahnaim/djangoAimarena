@@ -19,8 +19,8 @@ $("#file-input").change(function(e) {
 
 
 
-var file = document.getElementById('file-input');
-file.onchange = function(e) {
+
+$("#file-input").onchange = function(e) {
 var ext = this.value.match(/.([^.]+)$/)[1];
 switch (ext) {
   case 'jpg':
