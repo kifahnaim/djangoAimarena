@@ -671,7 +671,7 @@ def my_profile(request):
             cursor = connection.cursor()
 
             cursor.execute(
-                "select p.permission_name as permission_name, ur.RoleName as RoleName, rp.can_promote as can_promote ,rp.ban as ban, rp.email as email, rp.kick as kick, rp.manage_posts as manage_posts, rp.textwelcome as textwelcome FROM role_permissions rp, userrole ur, pages p where rp.permission_id_id=p.id and rp.Role_id_id=ur.id and rp.Role_id_id =" + str(
+                "select p.permission_name as permission_name, ur.RoleName as RoleName, rp.can_promote as can_promote ,rp.ban as ban, rp.email as email, rp.kick as kick, rp.manage_posts as manage_posts, rp.textwelcome as textwelcome FROM Role_permissions rp, userrole ur, Pages p where rp.permission_id_id=p.id and rp.Role_id_id=ur.id and rp.Role_id_id =" + str(
                     role))
             items = cursor.fetchall()
 
